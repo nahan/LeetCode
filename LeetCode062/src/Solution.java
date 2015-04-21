@@ -47,12 +47,17 @@ public class Solution {
 		if (m == 0 || n == 0 || m > 100 || n > 100) {
 			return 0;
 		}
-		for (int i = 1; i < m; i ++) {
-			for (int j = 1; j < n; j ++) {
-				
+		int[][] board = new int[m][n];
+		for (int i = 0; i < m; i ++) {
+			for (int j = 0; j < n; j ++) {
+				if (i == 0 || j == 0) {
+					board[i][j] = 1;
+				} else {
+					board[i][j] = board[i - 1][j] + board[i][j - 1];
+				}
 			}
 		}
-		return 0;
+		return board[m - 1][n - 1];
 	}
 	public static void main(String[] args) {
 		Solution solution = new Solution();
@@ -75,7 +80,7 @@ public class Solution {
 //		System.out.println("test 18 should be 28, output: " + solution.uniquePaths(3, 7));
 //		System.out.println("test 17 should be 21, output: " + solution.uniquePaths(3, 6));
 //		System.out.println("test 18 should be ?, output: " + solution.uniquePaths(19, 13));
-//		System.out.println("test 19 should be ?, output: " + solution.uniquePaths(51, 9));
+		System.out.println("test 19 should be ?, output: " + solution.uniquePaths(51, 9));
 
 		System.out.println("test 19 should be ?, output: " + solution.uniquePathsRec(51, 9));
 	}
