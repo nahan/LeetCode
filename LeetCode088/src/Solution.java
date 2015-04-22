@@ -7,19 +7,28 @@
  */
 public class Solution {
 	public void merge(int A[], int m, int B[], int n) {
-		if (A == null || B == null) {
+		if (A == null || B == null || n == 0) {
 			A = A == null ? B : A;
+			return;
 		}
 		int indexA = m - 1;
 		int indexB = n - 1;
 		for (int index = m + n - 1; index >= 0; index --) {
-			A[index] = A[indexA] > B[indexB] ? A[indexA] : B[indexB];
-			if (A[indexA] > B[indexB]) {
-				indexA --;
+			if (indexA >= 0 && indexB < 0) {
+				A[index] = A[indexA];
+				indexA--;
+			} else if (indexA < 0 && indexB >= 0) {
+				A[index] = B[indexB];
+				indexB--;
 			} else {
-				indexB --;
+				if (indexB < 0 || A[indexA] > B[indexB]) {
+					A[index] = A[indexA];
+					indexA--;
+				} else if (indexA < 0 || A[indexA] <= B[indexB]) {
+					A[index] = B[indexB];
+					indexB--;
+				}
 			}
-			System.out.println("index a: " + indexA + ", index b: " + indexB + ", index will be: " + (index - 1));
 			printArray(A);
 		}
 	}
@@ -32,7 +41,7 @@ public class Solution {
 	public static void main(String[] args) {
 		Solution solution = new Solution();
 		int[] array1 = new int[20];
-		int[] array2 = new int[10];
+		int[] array2 = new int[20];
 		
 		array1[0] = 1;
 		array1[1] = 3;
@@ -50,7 +59,7 @@ public class Solution {
 		solution.printArray(array1);
 		solution.printArray(array2);
 		
-		solution.merge(array1, 5, array2, 6);
+		solution.merge(array2, 5, array1, 5);
 		
 		solution.printArray(array1);
 		solution.printArray(array2);
