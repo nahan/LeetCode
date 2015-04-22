@@ -10,12 +10,49 @@ public class Solution {
 		if (A == null || B == null) {
 			A = A == null ? B : A;
 		}
-
+		int indexA = m - 1;
+		int indexB = n - 1;
+		for (int index = m + n - 1; index >= 0; index --) {
+			A[index] = A[indexA] > B[indexB] ? A[indexA] : B[indexB];
+			if (A[indexA] > B[indexB]) {
+				indexA --;
+			} else {
+				indexB --;
+			}
+			System.out.println("index a: " + indexA + ", index b: " + indexB + ", index will be: " + (index - 1));
+			printArray(A);
+		}
+	}
+	public void printArray(int[] A) {
+		for (int item: A) {
+			System.out.print(item + ", ");
+		}
+		System.out.println();
 	}
 	public static void main(String[] args) {
 		Solution solution = new Solution();
-		int[] array1 = new int[1];
-		int[] array2 = new int[2];
-		solution.merge(array1, array1.length, array2, array2.length);
+		int[] array1 = new int[20];
+		int[] array2 = new int[10];
+		
+		array1[0] = 1;
+		array1[1] = 3;
+		array1[2] = 5;
+		array1[3] = 7;
+		array1[4] = 9;
+		
+		array2[0] = 0;
+		array2[1] = 2;
+		array2[2] = 4;
+		array2[3] = 6;
+		array2[4] = 8;
+		array2[5] = 10;
+		
+		solution.printArray(array1);
+		solution.printArray(array2);
+		
+		solution.merge(array1, 5, array2, 6);
+		
+		solution.printArray(array1);
+		solution.printArray(array2);
 	}
 }
