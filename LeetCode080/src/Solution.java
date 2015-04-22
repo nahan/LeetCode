@@ -15,16 +15,13 @@ public class Solution {
 			return A.length;
 		}
 		int newLength = A.length;
-		for (int index = 1; index < newLength; index ++) {
+		for (int index = 1; index < newLength - 1; index ++) {
 			if (A[index] == A[index - 1] && A[index] == A[index + 1]) {
 				removeItem(A, index);
 				newLength --;
+				index --;
 			}
 		}
-//		for (int i = 0; i < newLength; i ++) {
-//			System.out.print(A[i] + ", ");
-//		}
-//		System.out.println();
 		return newLength;
 	}
 	public void removeItem(int[] A, int index) {
@@ -45,6 +42,7 @@ public class Solution {
 		int[] array7 = {0, 0, 0, 1, 1, 1, 1};
 		int[] array8 = {0, 0, 0, 1, 1, 1, 1, 2};
 		int[] array9 = {0, 0, 0, 1, 1, 1, 2, 2, 2};
+		int[] array10 = {1, 1, 1, 2, 2, 3};
 		System.out.println("input: null, \t\t\t\texpected length: 0, result: " + solution.removeDuplicates(array));
 		System.out.println("input: {}, \t\t\t\texpected length: 0, result: " + solution.removeDuplicates(array0));
 		System.out.println("input: {0}, \t\t\t\texpected length: 1, result: " + solution.removeDuplicates(array1));
@@ -56,6 +54,7 @@ public class Solution {
 		System.out.println("input: {0, 0, 0, 1, 1, 1, 1}, \t\texpected length: 4, result: " + solution.removeDuplicates(array7));
 		System.out.println("input: {0, 0, 0, 1, 1, 1, 1, 2}, \texpected length: 5, result: " + solution.removeDuplicates(array8));
 		System.out.println("input: {0, 0, 0, 1, 1, 1, 2, 2, 2}, \texpected length: 6, result: " + solution.removeDuplicates(array9));
+		System.out.println("input: {1, 1, 1, 2, 2, 3}, \texpected length: 6, result: " + solution.removeDuplicates(array10));
 		
 	}
 }
