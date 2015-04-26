@@ -32,51 +32,88 @@ public class Solution {
 	public List<List<Integer>> pathSum(TreeNode root, int sum) {
 		List<List<Integer>> result = new ArrayList<List<Integer>>();
 		if (root != null) {
-			Stack<TreeNode> temp = new Stack<TreeNode>();
-			temp.push(root);
-			while (temp.empty() != true) {
-				TreeNode top = temp.pop();
-				if (top.left == null && top.right == null) {
-					List<Integer> tempList = new ArrayList<Integer>();
-					tempList.add(top.val);
-//					System.out.print(top.val + ", ");
-					TreeNode parent = findParent(root, top);
+			List<TreeNode> leafList = new ArrayList<TreeNode>();
+			findLeaf(root, sum, leafList);
+			for (TreeNode item: leafList) {
+				List<Integer> path = new ArrayList<Integer>();
+				path.add(item.val);
+				TreeNode parent = findParent(root, item);
+				if (parent != null) {
+					path.add(parent.val);
+				}
+				while (parent != root) {
+					parent = findParent(root, parent);
 					if (parent != null) {
-						tempList.add(parent.val);
-//						System.out.print(parent.val + ", ");
-					}
-					while (parent != root) {
-						parent = findParent(root, parent);
-						if (parent != null) {
-							tempList.add(parent.val);
-//							System.out.print(parent.val + ", ");
-						}
-					}
-//					System.out.println(tempList);
-					int tempSum = 0;
-					for (int item: tempList) {
-						tempSum += item;
-					}
-					if (tempSum == sum) {
-						Stack<Integer> tempResult = new Stack<Integer>();
-						for (int item: tempList) {
-							tempResult.push(item);
-						}
-						tempList.clear();
-						while (tempResult.empty() != true) {
-							tempList.add(tempResult.pop());
-						}
-						result.add(tempList);
+						path.add(parent.val);
 					}
 				}
-				if (top.right != null) {
-					temp.push(top.right);
+				
+				Stack<Integer> tempResult = new Stack<Integer>();
+				for (int value: path) {
+					tempResult.push(value);
 				}
-				if (top.left != null) 
-					temp.push(top.left);
+				path.clear();
+				while (tempResult.empty() != true) {
+					path.add(tempResult.pop());
+				}
+				
+				result.add(path);
 			}
+//			Stack<TreeNode> temp = new Stack<TreeNode>();
+//			temp.push(root);
+//			while (temp.empty() != true) {
+//				TreeNode top = temp.pop();
+//				if (top.left == null && top.right == null) {
+//					List<Integer> tempList = new ArrayList<Integer>();
+//					tempList.add(top.val);
+//					TreeNode parent = findParent(root, top);
+//					if (parent != null) {
+//						tempList.add(parent.val);
+//					}
+//					while (parent != root) {
+//						parent = findParent(root, parent);
+//						if (parent != null) {
+//							tempList.add(parent.val);
+//						}
+//					}
+//					int tempSum = 0;
+//					for (int item: tempList) {
+//						tempSum += item;
+//					}
+//					if (tempSum == sum) {
+//						Stack<Integer> tempResult = new Stack<Integer>();
+//						for (int item: tempList) {
+//							tempResult.push(item);
+//						}
+//						tempList.clear();
+//						while (tempResult.empty() != true) {
+//							tempList.add(tempResult.pop());
+//						}
+//						result.add(tempList);
+//					}
+//				}
+//				if (top.right != null) {
+//					temp.push(top.right);
+//				}
+//				if (top.left != null) 
+//					temp.push(top.left);
+//			}
 		}
 		return result;
+	}
+	public void findLeaf(TreeNode root, int sum, List<TreeNode> leafList) {
+		if (root.val == sum) {
+			if (root.left == null && root.right == null) {
+				leafList.add(root);
+			}
+		} else {
+			if (root.left != null) {
+				findLeaf(root.left, sum - root.val, leafList);
+			} 
+			if (root.right != null) {
+				findLeaf(root.right, sum - root.val, leafList);
+			}
+		}
 	}
 	public TreeNode findParent(TreeNode root, TreeNode target) {
 		if (root.left == target || root.right == target) {
