@@ -35,29 +35,27 @@ public class Solution {
 			List<TreeNode> leafList = new ArrayList<TreeNode>();
 			findLeaf(root, sum, leafList);
 			for (TreeNode item: leafList) {
-				List<Integer> path = new ArrayList<Integer>();
-				path.add(item.val);
+				Stack<Integer> path = new Stack<Integer>();
+				path.push(item.val);
+				
 				TreeNode parent = findParent(root, item);
 				if (parent != null) {
-					path.add(parent.val);
+					parent = findParent(root, item);
+					path.push(parent.val);
 				}
 				while (parent != root) {
 					parent = findParent(root, parent);
 					if (parent != null) {
-						path.add(parent.val);
+						path.push(parent.val);
 					}
 				}
 				
-				Stack<Integer> tempResult = new Stack<Integer>();
-				for (int value: path) {
-					tempResult.push(value);
-				}
-				path.clear();
-				while (tempResult.empty() != true) {
-					path.add(tempResult.pop());
+				List<Integer> list = new ArrayList<Integer>();
+				while (path.empty() != true) {
+					list.add(path.pop());
 				}
 				
-				result.add(path);
+				result.add(list);
 			}
 //			Stack<TreeNode> temp = new Stack<TreeNode>();
 //			temp.push(root);
