@@ -31,32 +31,59 @@ class TreeNode {
 public class Solution {
 	public List<List<Integer>> pathSum(TreeNode root, int sum) {
 		List<List<Integer>> result = new ArrayList<List<Integer>>();
-		if (root != null) {
-			List<TreeNode> leafList = new ArrayList<TreeNode>();
-			findLeaf(root, sum, leafList);
-			for (TreeNode item: leafList) {
-				Stack<Integer> path = new Stack<Integer>();
-				path.push(item.val);
-				
-				TreeNode parent = findParent(root, item);
-				if (parent != null) {
-					parent = findParent(root, item);
-					path.push(parent.val);
-				}
-				while (parent != root) {
-					parent = findParent(root, parent);
-					if (parent != null) {
-						path.push(parent.val);
-					}
-				}
-				
-				List<Integer> list = new ArrayList<Integer>();
-				while (path.empty() != true) {
-					list.add(path.pop());
-				}
-				
-				result.add(list);
+		if (root != null && hasPathSum(root, sum) == true) {
+//			Stack<Integer> temp = new Stack<Integer>();
+//			findPath(root, sum, temp);
+//			System.out.println(temp);
+			
+			List<TreeNode> nodePath = new ArrayList<TreeNode>();
+//			findNodePath(root, sum, nodePath);
+//			findLeafPath(root, root, sum, nodePath);
+			findLeaf(root, sum, nodePath);
+//			System.out.println(nodePath);
+			for (TreeNode node: nodePath) {
+				System.out.print(node.val + ", ");
 			}
+			System.out.println();
+			
+			List<Integer> indexPath = null;
+			for (int index = 0; index < nodePath.size(); index ++) {
+				if (nodePath.get(index) == root) {
+					List<Integer> tempPath = new ArrayList<Integer>();
+					indexPath = tempPath;
+					result.add(indexPath);
+				}
+				indexPath.add(nodePath.get(index).val);
+			}
+			
+			
+//			List<TreeNode> leafList = new ArrayList<TreeNode>();
+//			findLeaf(root, sum, leafList);
+//			for (TreeNode item: leafList) {
+//				Stack<Integer> path = new Stack<Integer>();
+//				path.push(item.val);
+//				
+//				TreeNode parent = findParent(root, item);
+//				if (parent != null) {
+//					parent = findParent(root, item);
+//					path.push(parent.val);
+//				}
+//				while (parent != root) {
+//					parent = findParent(root, parent);
+//					if (parent != null) {
+//						path.push(parent.val);
+//					}
+//				}
+//				
+//				List<Integer> list = new ArrayList<Integer>();
+//				while (path.empty() != true) {
+//					list.add(path.pop());
+//				}
+//				
+//				result.add(list);
+//			}
+			
+			
 //			Stack<TreeNode> temp = new Stack<TreeNode>();
 //			temp.push(root);
 //			while (temp.empty() != true) {
@@ -99,31 +126,125 @@ public class Solution {
 		}
 		return result;
 	}
-	public void findLeaf(TreeNode root, int sum, List<TreeNode> leafList) {
-		if (root.val == sum) {
-			if (root.left == null && root.right == null) {
-				leafList.add(root);
-			}
+	public boolean hasPathSum(TreeNode root, int sum) {
+		if (root == null) {
+			return false;
+		}
+		if ((sum - root.val == 0) && (root.left == null && root.right == null)) {
+			return true;
 		} else {
-			if (root.left != null) {
-				findLeaf(root.left, sum - root.val, leafList);
-			} 
-			if (root.right != null) {
-				findLeaf(root.right, sum - root.val, leafList);
-			}
+			return hasPathSum(root.left, sum - root.val) || hasPathSum(root.right, sum - root.val);
 		}
 	}
-	public TreeNode findParent(TreeNode root, TreeNode target) {
-		if (root.left == target || root.right == target) {
-			return root;
+//	public void findLeaf(TreeNode root, int sum, List<TreeNode> leafList) {
+//		if (root.val == sum) {
+//			if (root.left == null && root.right == null) {
+//				leafList.add(root);
+//			}
+//		} else {
+//			if (root.left != null) {
+//				findLeaf(root.left, sum - root.val, leafList);
+//			}
+//			if (root.right != null) {
+//				findLeaf(root.right, sum - root.val, leafList);
+//			}
+//		}
+//	}
+//	public void findPath(TreeNode node, int sum, Stack<Integer> path) {
+//		if (node.val != sum) {
+//			if (node.left != null) {
+//				path.push(node.val);
+//				findPath(node.left, sum - node.val, path);
+//			}
+//			if (node.right != null) {
+//				path.push(node.val);
+//				findPath(node.right, sum - node.val, path);
+//			}
+//			if (node.left == null && node.right == null) {
+//				path.pop();
+//			}
+//		} else {
+//			if (node.left == null && node.right == null) {
+//				path.push(node.val);
+//			}
+//			if (node.left != null) {
+//				path.push(node.val);
+//				findPath(node.left, sum - node.val, path);
+//			}
+//			if (node.right != null) {
+//				path.push(node.val);
+//				findPath(node.right, sum - node.val, path);
+//			}
+//		}
+//	}
+	public void findNodePath(TreeNode node, int sum, List<TreeNode> path) {
+		if (node.val != sum) {
+			if (node.left != null) {
+				findNodePath(node.left, sum - node.val, path);
+			}
+			if (node.right != null) {
+				findNodePath(node.right, sum - node.val, path);
+			}
+			if (node.left == null && node.right == null) {
+				path.remove(path.size() - 1);
+			}
 		} else {
-			if (root.left != null && findParent(root.left, target) != null) {
-				return findParent(root.left, target);
+			if (node.left == null && node.right == null) {
+				path.add(node);
 			}
-			if (root.right != null && findParent(root.right, target) != null) {
-				return findParent(root.right, target);
+//			if (node.left != null) {
+//				path.add(node);
+//				findNodePath(node.left, sum - node.val, path);
+//			}
+//			if (node.right != null) {
+//				path.add(node);
+//				findNodePath(node.right, sum - node.val, path);
+//			}
+		}
+	}
+	public void findLeafPath(TreeNode root, TreeNode node, int sum, List<TreeNode> path) {
+		if (hasPathSum(node, sum) == true) {
+			if (node.left == null && node.right == null) {
+				path.add(node);
+				path.add(root);
 			}
-			return null;
+			if (node.left != null && node.right == null) {
+				path.add(node);
+				findLeafPath(root, node.left, sum - node.val, path);
+			}
+			if (node.right != null && node.left == null) {
+				path.add(node);
+				findLeafPath(root, node.right, sum - node.val, path);
+			}
+			if (node.left != null && node.right != null) {
+				path.add(node);
+				findLeafPath(root, node.left, sum - node.val, path);
+				path.add(node);
+				findLeafPath(root, node.right, sum - node.val, path);
+			}
+		} else {
+//			if (path.get(path.size() - 1) != root) {
+//				path.remove(path.size() - 1);
+//			}
+			path.remove(path.size() - 1);
+		}
+	}
+	
+	public void findLeaf(TreeNode node, int sum, List<TreeNode> path) {
+		if (hasPathSum(node, sum) == true) {
+			if (node.left == null && node.right == null) {
+				path.add(node);
+			}
+			if (node.left != null) {
+				path.add(node);
+				findLeaf(node.left, sum - node.val, path);
+			}
+			if (node.right != null) {
+				path.add(node);
+				findLeaf(node.right, sum - node.val, path);
+			}
+		} else {
+			path.remove(path.size() - 1);
 		}
 	}
 	
@@ -202,5 +323,93 @@ public class Solution {
 //		System.out.println();
 		
 		System.out.println(solution.pathSum(node01, 22));
+		
+//		Input:	{1,-2,-3,1,3,-2,#,-1}, 2
+//		Output:	[[1,-2,-2,3],[1]]
+//		Expected:	[[1,-2,3]]
+		
+		TreeNode node11 = new TreeNode(1);
+		TreeNode node12 = new TreeNode(-2);
+		TreeNode node13 = new TreeNode(-3);
+		TreeNode node14 = new TreeNode(1);
+		TreeNode node15 = new TreeNode(3);
+		TreeNode node16 = new TreeNode(-2);
+		TreeNode node17 = new TreeNode(-1);
+		
+		node11.left = node12;
+		node11.right = node13;
+		
+		node12.left = node14;
+		node12.right = node15;
+		
+		node13.left = node16;
+		
+		node14.left = node17;
+		node17.left = new TreeNode(-1);
+
+//		System.out.print("Pre-order: ");
+//		solution.preOrder(node11);
+//		System.out.println();
+//		System.out.print("In-order: ");
+//		solution.inOrder(node11);
+//		System.out.println();
+//		System.out.print("Post-order: ");
+//		solution.postOrder(node11);
+//		System.out.println();
+		
+		System.out.println(solution.pathSum(node11, 2));
+		
+//		Input:	{1,0,1,1,2,0,-1,0,1,-1,0,-1,0,1,0}, 2
+//		Output:	[[1,0,1,0,0,2,-1],[1,1,0,0,1,-1,1]]
+//		Expected:	[[1,0,1,0],[1,0,2,-1],[1,1,0,0],[1,1,-1,1]]
+		
+		TreeNode node001 = new TreeNode(1);
+		TreeNode node002 = new TreeNode(0);
+		TreeNode node003 = new TreeNode(1);
+		TreeNode node004 = new TreeNode(1);
+		TreeNode node005 = new TreeNode(2);
+		TreeNode node006 = new TreeNode(0);
+		TreeNode node007 = new TreeNode(-1);
+		TreeNode node008 = new TreeNode(0);
+		TreeNode node009 = new TreeNode(0);
+		TreeNode node010 = new TreeNode(-1);
+		TreeNode node011 = new TreeNode(0);
+		TreeNode node012 = new TreeNode(-1);
+		TreeNode node013 = new TreeNode(0);
+		TreeNode node014 = new TreeNode(1);
+		TreeNode node015 = new TreeNode(0);
+		
+		node001.left = node002;
+		node001.right = node003;
+		
+		node002.left = node004;
+		node002.right = node005;
+		
+		node003.left = node006;
+		node003.right = node007;
+		
+		node004.left = node008;
+		node004.right = node009;
+		
+		node005.left = node010;
+		node005.right = node011;
+		
+		node006.left = node012;
+		node006.right = node013;
+		
+		node007.left = node014;
+		node007.right = node015;
+		
+//		System.out.print("Pre-order: ");
+//		solution.preOrder(node001);
+//		System.out.println();
+//		System.out.print("In-order: ");
+//		solution.inOrder(node001);
+//		System.out.println();
+//		System.out.print("Post-order: ");
+//		solution.postOrder(node001);
+//		System.out.println();
+
+		System.out.println(solution.pathSum(node001, 2));
 	}
 }
