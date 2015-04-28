@@ -31,6 +31,85 @@ class TreeNode {
 public class Solution {
 	public List<List<Integer>> pathSum(TreeNode root, int sum) {
 		List<List<Integer>> result = new ArrayList<List<Integer>>();
+		Stack<TreeNode> stack = new Stack<TreeNode>();
+		TreeNode index = root;
+		stack.push(index);
+		List<TreeNode> visited = new ArrayList<TreeNode>();
+		while (stack.empty() == false) {
+			
+			// push all nodes through a path from root.
+			TreeNode child = index;
+			System.out.println("index: " + index.val);
+			while (child != null && !visited.contains(index)) {
+				child = index.left;
+				if (child != null && !visited.contains(child)) {
+					stack.push(child);
+					index = child;
+				} else {
+					child = index.right;
+					if (child != null && !visited.contains(child)) {
+						stack.push(child);
+						index = child;
+					}
+				}
+			}
+			printNodeStack(stack);
+			
+			TreeNode top;
+			// check if this path is qualified to get the sum.
+			top = stack.peek();
+			if (hasPath(stack, sum) == true) {
+				visited.add(top);
+				List<Integer> path = new ArrayList<Integer>();
+				for (TreeNode item: stack) {
+					path.add(item.val);
+					if (item.left != null && item.right != null && visited.contains(item.left) && visited.contains(item.left)) {
+						visited.add(item);
+					} else if (item.left != null && item.right == null && visited.contains(item.left)) {
+						visited.add(item);
+					}
+				}
+				result.add(path);
+				stack.clear();
+				
+				// add root if all of it's children has not been visited yet.
+				if (!visited.contains(root)) {
+					index = root;
+					stack.add(index);
+				}
+			} else {
+				if (top.left == null && top.right == null) {
+					visited.add(stack.pop());
+					index = stack.peek();
+				} else if (top.left == null && top.right != null) {
+					if (visited.contains(top.right)) {
+						visited.add(stack.pop());
+					}
+					index = stack.peek();
+				}
+//				stack.pop();
+//				stack.clear();
+			}		
+//			stack.clear();
+		}
+		return result;
+	}
+	public void printNodeStack(Stack<TreeNode> stack) {
+		for (TreeNode item: stack) {
+			System.out.print(item.val + ", ");
+		}
+		System.out.println();
+	}
+	public boolean hasPath(Stack<TreeNode> stack, int sum) {
+		int temp = 0;
+		for (TreeNode item: stack) {
+			temp += item.val;
+		}
+		return temp == sum && stack.peek().left == null && stack.peek().right == null? true : false;
+	}
+	
+	public List<List<Integer>> pathSum2(TreeNode root, int sum) {
+		List<List<Integer>> result = new ArrayList<List<Integer>>();
 		if (root != null && hasPathSum(root, sum) == true) {
 //			Stack<Integer> temp = new Stack<Integer>();
 //			findPath(root, sum, temp);
@@ -234,6 +313,7 @@ public class Solution {
 		if (hasPathSum(node, sum) == true) {
 			if (node.left == null && node.right == null) {
 				path.add(node);
+				return;
 			}
 			if (node.left != null) {
 				path.add(node);
@@ -243,6 +323,7 @@ public class Solution {
 				path.add(node);
 				findLeaf(node.right, sum - node.val, path);
 			}
+			
 		} else {
 			path.remove(path.size() - 1);
 		}
@@ -284,9 +365,8 @@ public class Solution {
 		}
 		System.out.print(root.val + ", ");
 	}
-	public static void main(String[] args) {
-		Solution solution = new Solution();
-		
+	public void testCase1() {
+//		test case 1 ************************************************************************** entering
 		TreeNode node01 = new TreeNode(5);
 		TreeNode node02 = new TreeNode(4);
 		TreeNode node03 = new TreeNode(8);
@@ -302,6 +382,7 @@ public class Solution {
 		node01.right = node03;
 		
 		node02.left = node04;
+		node02.right = new TreeNode(13);
 		
 		node03.left = node05;
 		node03.right = node06;
@@ -311,6 +392,11 @@ public class Solution {
 		
 		node06.left = node09;
 		node06.right = node10;
+		
+//		TreeNode node100 = new TreeNode(100);
+//		node07.right = node100;
+//		TreeNode node200 = new TreeNode(200);
+//		node100.right = node200;
 		
 //		System.out.print("Pre-order: ");
 //		solution.preOrder(node01);
@@ -322,8 +408,11 @@ public class Solution {
 //		solution.postOrder(node01);
 //		System.out.println();
 		
-		System.out.println(solution.pathSum(node01, 22));
-		
+		System.out.println(pathSum(node01, 22));
+//		test case 1 ************************************************************************** leaving
+	}
+	public void testCase2() {
+//		test case 2 ************************************************************************** entering
 //		Input:	{1,-2,-3,1,3,-2,#,-1}, 2
 //		Output:	[[1,-2,-2,3],[1]]
 //		Expected:	[[1,-2,3]]
@@ -357,8 +446,11 @@ public class Solution {
 //		solution.postOrder(node11);
 //		System.out.println();
 		
-		System.out.println(solution.pathSum(node11, 2));
-		
+		System.out.println(pathSum(node11, 2));
+//		test case 2 ************************************************************************** leaving
+	}
+	public void testCase3() {
+//		test case 3 ************************************************************************** entering
 //		Input:	{1,0,1,1,2,0,-1,0,1,-1,0,-1,0,1,0}, 2
 //		Output:	[[1,0,1,0,0,2,-1],[1,1,0,0,1,-1,1]]
 //		Expected:	[[1,0,1,0],[1,0,2,-1],[1,1,0,0],[1,1,-1,1]]
@@ -410,6 +502,14 @@ public class Solution {
 //		solution.postOrder(node001);
 //		System.out.println();
 
-		System.out.println(solution.pathSum(node001, 2));
+		System.out.println(pathSum(node001, 2));
+//		test case 3 ************************************************************************** leaving
+	}
+	public static void main(String[] args) {
+		Solution solution = new Solution();
+		
+		solution.testCase1();
+//		solution.testCase2();
+		solution.testCase3();
 	}
 }
