@@ -14,7 +14,7 @@ public class Solution {
 		int m = (int) Math.sqrt(n);
 		for (int i = 2; i <= m; i ++) {
 			if (primeMap.get(i) == true) {
-				for (int k = i * i; k < n; k += i) {
+				for (int k = i * i; k <= n; k += i) {
 					primeMap.put(k, false);
 				}
 			}
