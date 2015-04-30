@@ -9,4 +9,7 @@ public class Solution {
 	public List<Integer> getRow(int rowIndex) {
 		return null;
 	}
+	public static void main(String[] args) {
+		System.out.println("Hello I am back!");
+	}
 }
