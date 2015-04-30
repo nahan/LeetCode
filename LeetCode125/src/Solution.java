@@ -11,7 +11,26 @@
  */
 public class Solution {
 	public boolean isPalindrome(String s) {
-		return false;
+		if (s == null || s.length() == 0) {
+			return true;
+		}
+		int headIndex = 0;
+		int tailIndex = s.length() - 1;
+		
+		String cleaned = filter(s);
+		System.out.println(cleaned);
+		return true;
+	}
+	public String filter(String s) {
+		StringBuilder builder = new StringBuilder();
+		for (int i = 0; i < s.length(); i ++) {
+			if (((int)s.charAt(i) >= 48 && (int)s.charAt(i) <= 57) || 
+					((int)s.charAt(i) >= 65 && (int)s.charAt(i) <= 90) || 
+					((int)s.charAt(i) >= 97 && (int)s.charAt(i) <= 122) ) {
+				builder.append(s.charAt(i));
+			}
+		}
+		return builder.toString();
 	}
 	public static void main(String[] args) {
 		Solution solution = new Solution();
