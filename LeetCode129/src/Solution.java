@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.Iterator;
+
 
 class TreeNode {
 	int val;
@@ -22,7 +25,29 @@ class TreeNode {
  */
 public class Solution {
 	public int sumNumbers(TreeNode root) {
-		return 0;
+		int sum = 0;
+		int pathSum = 0;
+		ArrayList<Integer> totalSum = new ArrayList<Integer>();
+		if (root != null) {
+			sumNumbers(root, pathSum, totalSum);
+		}
+		Iterator<Integer> iterator = totalSum.iterator();
+		while (iterator.hasNext()) {
+			sum += iterator.next().intValue();
+		}
+		return sum;
+	}
+	public void sumNumbers(TreeNode node, int path, ArrayList<Integer> sum) {
+		path = path * 10 + node.val;
+		if (node.left == null && node.right == null) {
+			sum.add(path);
+		}
+		if (node.left != null) {
+			sumNumbers(node.left, path, sum);
+		}
+		if (node.right != null) {
+			sumNumbers(node.right, path, sum);
+		}
 	}
 	public void preOrder(TreeNode root) {
 		if (root != null) {
@@ -74,5 +99,17 @@ public class Solution {
 		System.out.println();
 		
 		System.out.println(solution.sumNumbers(node00));
+		
+		TreeNode node10 = new TreeNode(1);
+		TreeNode node11 = new TreeNode(2);
+		TreeNode node12 = new TreeNode(3);
+		
+		node10.left = node11;
+		node10.right = node12;
+		System.out.println(solution.sumNumbers(node10));
+		
+		TreeNode nodenull = null;
+		System.out.println(solution.sumNumbers(nodenull));
+		
 	}
 }
