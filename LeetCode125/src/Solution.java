@@ -12,13 +12,21 @@
 public class Solution {
 	public boolean isPalindrome(String s) {
 		if (s == null || s.length() == 0) {
-			return true;
+			return s == null ? false : true;
 		}
-		int headIndex = 0;
-		int tailIndex = s.length() - 1;
 		
-		String cleaned = filter(s);
-		System.out.println(cleaned);
+		String clean = filter(s);
+		
+		int headIndex = 0;
+		int tailIndex = clean.length() - 1;
+		while (headIndex < clean.length() || tailIndex >= 0) {
+			if (clean.charAt(headIndex) != clean.charAt(tailIndex)) {
+				return false;
+			}
+			
+			headIndex ++;
+			tailIndex --;
+		}
 		return true;
 	}
 	public String filter(String s) {
@@ -27,10 +35,11 @@ public class Solution {
 			if (((int)s.charAt(i) >= 48 && (int)s.charAt(i) <= 57) || 
 					((int)s.charAt(i) >= 65 && (int)s.charAt(i) <= 90) || 
 					((int)s.charAt(i) >= 97 && (int)s.charAt(i) <= 122) ) {
+				
 				builder.append(s.charAt(i));
 			}
 		}
-		return builder.toString();
+		return builder.toString().toLowerCase();
 	}
 	public static void main(String[] args) {
 		Solution solution = new Solution();
