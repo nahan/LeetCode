@@ -30,11 +30,59 @@ public class Solution {
 			index ++;
 		}
 		System.out.println(triangle);
+		
+		/////////////////////////////////////////////////////////
+		List<Integer> temp = new ArrayList<Integer>();
+		for (int i = 0; i <= rowIndex; i ++) {
+			temp.add(1);
+		}
+		if (rowIndex < 2) {
+			System.out.println(temp);
+			return triangle.get(rowIndex);
+		}
+		
+		int mid_index = rowIndex / 2;
+		int row_index = 2;
+		while (row_index <= rowIndex) {
+			System.out.println("\nentering current loop, the list is: " + temp);
+			int left_index = 0;
+			int right_index = 0;
+			while (mid_index - left_index + 1 != mid_index) {
+				System.out.println("first sub-loop: to calculate half.");
+				temp.set(mid_index - left_index, temp.get(mid_index) + temp.get(mid_index + right_index + 1));
+				left_index ++;
+				right_index ++;
+			}
+			
+			System.out.println("after half-calculate, the list is: " + temp);
+			
+			left_index = 0;
+			right_index = 0;
+			while (right_index < mid_index) {
+				System.out.println("second sub-loop: to rotate.");
+				if ((row_index + 1) % 2 == 0) {
+					System.out.println("even row index.");
+					temp.set(mid_index + right_index + 1, temp.get(mid_index - left_index));
+				} else {
+					System.out.println("odd row index.");
+					temp.set(mid_index + right_index + 1, temp.get(mid_index - left_index - 1));
+				}
+				left_index ++;
+				right_index ++;
+			}
+			
+			row_index ++;
+			System.out.println("during current loop, the list is: " + temp);
+		}
+		System.out.println(temp);
+		
+		
+		/////////////////////////////////////////////////////////
 		return triangle.get(rowIndex);
 	}
 	public static void main(String[] args) {
 		System.out.println("Hello I am back!");
 		Solution solution = new Solution();
-		System.out.println(solution.getRow(7));
+		System.out.println(solution.getRow(4));
 	}
 }
