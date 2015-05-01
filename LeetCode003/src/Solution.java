@@ -1,4 +1,7 @@
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -9,6 +12,40 @@ import java.util.HashMap;
  */
 public class Solution {
 	public int lengthOfLongestSubstring(String s) {
+		if (s == null) {
+			return 0;
+		}
+		if (s.length() < 2) {
+			return s.length();
+		}
+		Map<Character, Integer> hash = new HashMap<Character, Integer>();
+		int max = 1;
+		int headIndex = 0;
+		int tailIndex = 1;
+		hash.put(s.charAt(headIndex), headIndex);
+		while (headIndex < s.length() && tailIndex < s.length()) {
+			if (hash.containsKey(s.charAt(tailIndex)) == true) {
+//				System.out.println("before: head is " + headIndex);
+				headIndex = hash.get(s.charAt(tailIndex)) + 1;
+//				System.out.println("after: head is " + headIndex);
+				hash.clear();
+				hash.put(s.charAt(tailIndex), tailIndex);
+				max = Math.max((tailIndex - headIndex), max);
+				tailIndex ++;
+			} else {
+				hash.put(s.charAt(tailIndex), tailIndex);
+				tailIndex ++;
+			}
+			
+//			try {
+//				Thread.sleep(500);
+//			} catch (InterruptedException e) {
+//				e.printStackTrace();
+//			}
+		}
+		return max;
+	}
+	public int lengthOfLongestSubstring2(String s) {
 		if (s == null) {
 			return 0;
 		}
@@ -50,34 +87,42 @@ public class Solution {
 		
 		System.out.println("++++++++++++++++++++++++++++++++++++++++++++ entering test case 00");
 		System.out.println(test00 + " => " + solution.lengthOfLongestSubstring(test00));
+		System.out.println(test00 + " => " + solution.lengthOfLongestSubstring2(test00));
 		System.out.println("-------------------------------------------- leaving test case 00\n");
 		
 		System.out.println("++++++++++++++++++++++++++++++++++++++++++++ entering test case 01");
 		System.out.println(test01 + " => " + solution.lengthOfLongestSubstring(test01));
+		System.out.println(test01 + " => " + solution.lengthOfLongestSubstring2(test01));
 		System.out.println("-------------------------------------------- leaving test case 01\n");
 		
 		System.out.println("++++++++++++++++++++++++++++++++++++++++++++ entering test case 02");
 		System.out.println(test02 + " => " + solution.lengthOfLongestSubstring(test02));
+		System.out.println(test02 + " => " + solution.lengthOfLongestSubstring2(test02));
 		System.out.println("-------------------------------------------- leaving test case 02\n");
 		
 		System.out.println("++++++++++++++++++++++++++++++++++++++++++++ entering test case 03");
 		System.out.println(test03 + " => " + solution.lengthOfLongestSubstring(test03));
+		System.out.println(test03 + " => " + solution.lengthOfLongestSubstring2(test03));
 		System.out.println("-------------------------------------------- leaving test case 03\n");
 		
 		System.out.println("++++++++++++++++++++++++++++++++++++++++++++ entering test case 04");
 		System.out.println(test04 + " => " + solution.lengthOfLongestSubstring(test04));
+		System.out.println(test04 + " => " + solution.lengthOfLongestSubstring2(test04));
 		System.out.println("-------------------------------------------- leaving test case 04\n");
 		
 		System.out.println("++++++++++++++++++++++++++++++++++++++++++++ entering test case 05");
 		System.out.println(test05 + " => " + solution.lengthOfLongestSubstring(test05));
+		System.out.println(test05 + " => " + solution.lengthOfLongestSubstring2(test05));
 		System.out.println("-------------------------------------------- leaving test case 05\n");
 		
 		System.out.println("++++++++++++++++++++++++++++++++++++++++++++ entering test case 06");
 		System.out.println(test06 + " => " + solution.lengthOfLongestSubstring(test06));
+		System.out.println(test06 + " => " + solution.lengthOfLongestSubstring2(test06));
 		System.out.println("-------------------------------------------- leaving test case 06\n");
 		
 		System.out.println("++++++++++++++++++++++++++++++++++++++++++++ entering test case 07");
 		System.out.println(test07 + " => \n" + solution.lengthOfLongestSubstring(test07));
+		System.out.println(test07 + " => \n" + solution.lengthOfLongestSubstring2(test07));
 		System.out.println("-------------------------------------------- leaving test case 07\n");
 	}
 }
