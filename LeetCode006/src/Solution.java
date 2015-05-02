@@ -24,25 +24,60 @@ public class Solution {
 			return s;
 		}
 		
-		char[][] matrix = buildMatrix(numRows, s.length() / numRows);
+		// get a matrix filled with *
+		char[][] matrix = buildMatrix(numRows, s.length() / numRows + 1);
 		printMatrix(matrix);
 		
+		// fill regular columns
 		int index = 0;
-		for (int column = 0; column < matrix.length; column ++) {
-			for (int row = 0; row < matrix[column].length; row += column + 2 * (numRows - 2)) {
-				matrix[row][column] = '#';
+		for (int column = 0; column < matrix[0].length; column += 2) {
+			for (int row = 0; row < numRows; row ++) {
+				matrix[row][column] = s.charAt(index);
 				index ++;
+				if (index >= s.length()) {
+					break;
+				}
 			}
-//			index += ;
+			index += numRows - 2;
 			if (index >= s.length()) {
 				break;
 			}
 		}
+		printMatrix(matrix);
 		
-		return null;
+		// fill gaps
+		if (numRows >= 2) {
+			index = numRows;
+			for (int column = 1; column < matrix[0].length; column += 2) {
+				for (int row = matrix.length - 2; row > 0; row --) {
+					matrix[row][column] = s.charAt(index);
+					index ++;
+					if (index >= s.length()) {
+						break;
+					}
+				}
+				index += numRows;
+				if (index >= s.length()) {
+					break;
+				}
+			}
+		}
+		printMatrix(matrix);
+		
+		// get the result string
+		StringBuilder builder = new StringBuilder();
+		for (int i = 0; i < matrix.length; i ++) {
+			for (int j = 0; j < matrix[i].length; j ++) {
+				if (matrix[i][j] != '*') {
+					builder.append(matrix[i][j]);
+				}
+			}
+		}
+		
+		return builder.toString();
 	}
 	public char[][] buildMatrix(int row, int column) {
-		char[][] matrix = new char[row][column + column * (row - 2)];
+		char[][] matrix = new char[row][2 * column];
 		for (int i = 0; i < matrix.length; i ++) {
 			for (int j = 0; j < matrix[i].length; j ++) {
 				matrix[i][j] = '*';
@@ -66,16 +101,16 @@ public class Solution {
 		String test01 = "0123456789";
 		int num01 = 1;
 		
-		String test02 = "0123456789";
+		String test02 = "abc";
 		int num02 = 2;
 		
-		String test03 = "0123456789";
+		String test03 = "PAYPALISHIRING";
 		int num03 = 3;
 		
-		String test04 = "0123456789";
+		String test04 = "01234567890123456789";
 		int num04 = 4;
 		
-		String test05 = "0123456789";
+		String test05 = "01234567890123456789";
 		int num05 = 5;
 		
 		System.out.println(solution.convert(test00, num00));
