@@ -5,7 +5,13 @@
  */
 public class Solution {
 	public String intToRoman(int num) {
-		return null;
+		StringBuilder builder = new StringBuilder();
+		int temp = num;
+		while (temp != 0) {
+			builder.append(temp % 10);
+			temp /= 10;
+		}
+		return builder.reverse().toString();
 	}
 	public static void main(String[] args) {
 		Solution solution = new Solution();
