@@ -26,7 +26,7 @@ public class Solution {
 		
 		// get a matrix filled with *
 		char[][] matrix = buildMatrix(numRows, s.length() / numRows + 1);
-		printMatrix(matrix);
+//		printMatrix(matrix);
 		
 		// fill regular columns
 		int index = 0;
@@ -43,7 +43,7 @@ public class Solution {
 				break;
 			}
 		}
-		printMatrix(matrix);
+//		printMatrix(matrix);
 		
 		// fill gaps
 		if (numRows >= 2) {
@@ -62,7 +62,7 @@ public class Solution {
 				}
 			}
 		}
-		printMatrix(matrix);
+//		printMatrix(matrix);
 		
 		// get the result string
 		StringBuilder builder = new StringBuilder();
