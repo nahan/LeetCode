@@ -7,11 +7,42 @@ public class Solution {
 	public String intToRoman(int num) {
 		StringBuilder builder = new StringBuilder();
 		int temp = num;
+		int[] digit = new int[4];
+		int index = 3;
 		while (temp != 0) {
-			builder.append(temp % 10);
+			digit[index] = (temp % 10);
 			temp /= 10;
+			index --;
 		}
-		return builder.reverse().toString();
+		
+		int thousand = digit[0];
+		int hundred = digit[1];
+		int ten = digit[2];
+		int unit = digit[3];
+		
+		// thousand
+		while (thousand > 0) {
+			builder.append("M");
+			thousand --;
+		}
+		
+		// hundred
+		if (hundred >= 5) {
+			while (hundred > 5) {
+				builder.append("C");
+				hundred --;
+			}
+			builder.append("D");
+		} else {
+			builder.append("D");
+			while (hundred > 0) {
+				builder.append("C");
+				hundred --;
+			}
+		}
+		
+		System.out.println(digit[0] + ", " + digit[1] + ", " + digit[2] + ", " + digit[3]);
+		return null;
 	}
 	public static void main(String[] args) {
 		Solution solution = new Solution();
