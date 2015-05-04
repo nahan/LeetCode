@@ -27,33 +27,70 @@ public class Solution {
 		}
 		
 		// hundred
-		if (hundred >= 5) {
+		if (hundred == 9) {
+			builder.append("CM");
+		} else if (hundred >= 5) {
+			builder.append("D");
 			while (hundred > 5) {
 				builder.append("C");
 				hundred --;
 			}
-			builder.append("D");
 		} else {
-			builder.append("D");
+			if (hundred > 3) {
+				builder.append("D");
+			}
 			while (hundred > 0) {
 				builder.append("C");
 				hundred --;
 			}
 		}
 		
-		System.out.println(digit[0] + ", " + digit[1] + ", " + digit[2] + ", " + digit[3]);
-		return null;
+		// ten
+		if (ten == 9) {
+			builder.append("XC");
+		} else if (ten >= 5) {
+			while (ten > 5) {
+				builder.append("X");
+				ten --;
+			}
+			builder.append("L");
+		} else {
+			if (ten > 3) {
+				builder.append("L");
+			}
+			while (ten > 0) {
+				builder.append("X");
+				ten --;
+			}
+		}
+		
+		// unit
+		if (unit == 9) {
+			builder.append("XI");
+		} else if (unit >= 5) {
+			while (unit > 5) {
+				builder.append("I");
+				unit --;
+			}
+			builder.append("V");
+		} else {
+			if (unit > 3) {
+				builder.append("V");
+			}
+			while (unit > 0) {
+				builder.append("I");
+				unit --;
+			}
+		}
+		
+//		System.out.println(digit[0] + ", " + digit[1] + ", " + digit[2] + ", " + digit[3]);
+		return builder.toString();
 	}
 	public static void main(String[] args) {
 		Solution solution = new Solution();
-		int test00 = 1;
-		int test01 = 5;
-		int test02 = 10;
-		int test03 = 3999;
+		for (int i = 1; i <= 100; i ++) {
+			System.out.println(i + " is: " + solution.intToRoman(i));
+		}
 		
-		System.out.println(test00 + " is: " + solution.intToRoman(test00));
-		System.out.println(test01 + " is: " + solution.intToRoman(test01));
-		System.out.println(test02 + " is: " + solution.intToRoman(test02));
-		System.out.println(test03 + " is: " + solution.intToRoman(test03));
 	}
 }
