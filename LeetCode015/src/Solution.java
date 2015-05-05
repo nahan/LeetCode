@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -16,7 +18,51 @@ import java.util.List;
  */
 public class Solution {
 	public List<List<Integer>> threeSum(int[] nums) {
+		if (nums == null || nums.length < 3) {
+			return null;
+		}
+		Arrays.sort(nums);
+		List<List<Integer>> result = new ArrayList<List<Integer>>();
+		int front = 0;
+		int tail = nums.length - 1;
+		while (front + 1 != tail) {
+			int target = (-1) * (nums[front] + nums[tail]);
+			if (target > nums[tail]) {
+				front ++;
+			} else if (target < nums[front]) {
+				tail --;
+			}
+			if (hasTarget(nums, front + 1, tail - 1, target) == true) {
+				List<Integer> temp = new ArrayList<Integer>();
+				temp.add(nums[front]);
+				temp.add(target);
+				temp.add(nums[tail]);
+				result.add(temp);
+			}
+		}
 		return null;
+	}
+	public boolean hasTarget(int[] array, int start, int end, int target) {
+		int mid = start + (end - start) / 2;
+		if (start > end) {
+			return false;
+		}
+		if (array[mid] == target) {
+			return true;
+		} else if (array[mid] > target) {
+			return hasTarget(array, start, mid - 1, target);
+		} else {
+			return hasTarget(array, mid + 1, end, target);
+		}
+	}
+	public int searchInt(int[] array, int start, int end, int target) {
+		return 0;
+	}
+	public void printArray(int[] array) {
+		for (int item: array) {
+			System.out.print(item + ", ");
+		}
+		System.out.println();
 	}
 	public static void main(String[] args) {
 		Solution solution = new Solution();
