@@ -12,7 +12,32 @@ import java.util.List;
  */
 public class Solution {
 	public List<String> letterCombinations(String digits) {
+		char[][] board = new char[10][];
+		board[0] = new char[] {};
+		board[1] = new char[] {};
+		board[2] = new char[] {'a', 'b', 'c'};
+		board[3] = new char[] {'d', 'e', 'f'};
+		board[4] = new char[] {'g', 'h', 'i'};
+		board[5] = new char[] {'j', 'k', 'l'};
+		board[6] = new char[] {'m', 'n', 'o'};
+		board[7] = new char[] {'p', 'q', 'r', 's'};
+		board[8] = new char[] {'t', 'u', 'v'};
+		board[9] = new char[] {'w', 'x', 'y', 'z'};
+		
+		printMatrix(board);
+		
 		return null;
+	}
+	public void printMatrix(char[][] matrix) {
+		for (char[] item: matrix) {
+			printArray(item);
+		}
+	}
+	public void printArray(char[] array) {
+		for (char item: array) {
+			System.out.print(item + ", ");
+		}
+		System.out.println();
 	}
 	public static void main(String[] args) {
 		Solution solution = new Solution();
@@ -22,6 +47,7 @@ public class Solution {
 		String test03 = "2";
 		String test04 = "23";
 		String test05 = "234";
+		String test06 = "23456789";
 		
 		System.out.println(solution.letterCombinations(test00));
 		System.out.println(solution.letterCombinations(test01));
@@ -29,6 +55,7 @@ public class Solution {
 		System.out.println(solution.letterCombinations(test03));
 		System.out.println(solution.letterCombinations(test04));
 		System.out.println(solution.letterCombinations(test05));
+		System.out.println(solution.letterCombinations(test06));
 		
 	}
 }
