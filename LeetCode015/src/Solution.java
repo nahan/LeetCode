@@ -19,21 +19,10 @@ import java.util.List;
 public class Solution {
 	public List<List<Integer>> threeSum(int[] nums) {
 		List<List<Integer>> result = new ArrayList<List<Integer>>();
-		if (nums == null || nums.length < 3) {
+		if (nums == null) {
 			return result;
 		}
 		Arrays.sort(nums);
-		if (nums[0] > 0 || nums[nums.length - 1] < 0) {
-			return result;
-		}
-		if (onlyZero(nums) == true) {
-			List<Integer> temp = new ArrayList<Integer>();
-			temp.add(0);
-			temp.add(0);
-			temp.add(0);
-			result.add(temp);
-			return result;
-		}
 		int index = 0;
 		while (index < nums.length - 2 && nums[index] <= 0) {
 			if (result.size() != 0 && index > 0 && nums[index] == nums[index - 1]) {
@@ -44,21 +33,19 @@ public class Solution {
 			int tail = nums.length - 1;
 			while (front < tail) {
 				if (nums[front] + nums[tail] == nums[index] * (-1)) {
-					if (result.size() != 0 && 
-							result.get(result.size() - 1).get(0) == nums[index] && 
-							result.get(result.size() - 1).get(1) == nums[front] && 
-							result.get(result.size() - 1).get(2) == nums[tail]) {
-						front ++;
-						tail --;
-					} else {
+					if (!(result.size() != 0 && 
+						  result.get(result.size() - 1).get(0) == nums[index] && 
+						  result.get(result.size() - 1).get(1) == nums[front] && 
+						  result.get(result.size() - 1).get(2) == nums[tail])) {
+						
 						List<Integer> item = new ArrayList<Integer>();
 						item.add(nums[index]);
 						item.add(nums[front]);
 						item.add(nums[tail]);
 						result.add(item);
-						front ++;
-						tail --;
-					}
+					} 
+					front ++;
+					tail --;
 				} else if (nums[front] + nums[tail] < nums[index] * (-1)) {
 					front ++;
 				} else {
@@ -68,14 +55,6 @@ public class Solution {
 			index ++;
 		}
 		return result;
-	}
-	public boolean onlyZero(int[] array) {
-		for (int item: array) {
-			if (item != 0) {
-				return false;
-			}
-		}
-		return true;
 	}
 	public List<List<Integer>> threeSum2(int[] nums) {
 		List<List<Integer>> result = new ArrayList<List<Integer>>();
