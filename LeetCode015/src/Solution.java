@@ -18,46 +18,85 @@ import java.util.List;
  */
 public class Solution {
 	public List<List<Integer>> threeSum(int[] nums) {
+		List<List<Integer>> result = new ArrayList<List<Integer>>();
 		if (nums == null || nums.length < 3) {
-			return null;
+			return result;
 		}
 		Arrays.sort(nums);
+		if (nums[0] > 0 || nums[nums.length - 1] < 0) {
+			return result;
+		}
+		int mid = 1;
+		while (mid < nums.length - 1) {
+			int front = 0;
+			int tail = nums.length - 1;
+			while (front < mid && tail > mid) {
+				if (nums[front] + nums[tail] == nums[mid] * (-1)) {
+					if (result.size() != 0 && 
+							result.get(result.size() - 1).get(0) == nums[front] && 
+							result.get(result.size() - 1).get(1) == nums[mid] && 
+							result.get(result.size() - 1).get(2) == nums[tail]) {
+						break;
+					}
+					List<Integer> item = new ArrayList<Integer>();
+					item.add(nums[front]);
+					item.add(nums[mid]);
+					item.add(nums[tail]);
+					result.add(item);
+					front ++;
+					tail --;
+				} else if (nums[front] + nums[tail] < nums[mid] * (-1)) {
+					front ++;
+				} else {
+					tail --;
+				}
+			}
+			mid ++;
+		}
+		return result;
+	}
+	
+	public List<List<Integer>> threeSum2(int[] nums) {
 		List<List<Integer>> result = new ArrayList<List<Integer>>();
-		int front = 0;
-		int tail = nums.length - 1;
-		while (front + 1 != tail) {
-			int target = (-1) * (nums[front] + nums[tail]);
-			if (target > nums[tail]) {
-				front ++;
-			} else if (target < nums[front]) {
-				tail --;
+		if (nums == null || nums.length < 3) {
+			return result;
+		}
+		Arrays.sort(nums);
+		if (nums[0] > 0 || nums[nums.length - 1] < 0) {
+			return result;
+		}
+		int index = 0;
+		while (nums[index] < 0) {
+			int front = index + 1;
+			int tail = nums.length - 1;
+			while (front < tail) {
+				if (nums[front] + nums[tail] == nums[index] * (-1)) {
+					if (result.size() != 0 && 
+							result.get(result.size() - 1).get(0) == nums[index] && 
+							result.get(result.size() - 1).get(1) == nums[front] && 
+							result.get(result.size() - 1).get(2) == nums[tail]) {
+						front ++;
+						tail --;
+					} else {
+						List<Integer> item = new ArrayList<Integer>();
+						item.add(nums[index]);
+						item.add(nums[front]);
+						item.add(nums[tail]);
+						result.add(item);
+						front ++;
+						tail --;
+					}
+				} else if (nums[front] + nums[tail] < nums[index] * (-1)) {
+					front ++;
+				} else {
+					tail --;
+				}
 			}
-			if (hasTarget(nums, front + 1, tail - 1, target) == true) {
-				List<Integer> temp = new ArrayList<Integer>();
-				temp.add(nums[front]);
-				temp.add(target);
-				temp.add(nums[tail]);
-				result.add(temp);
-			}
+			index ++;
 		}
-		return null;
+		return result;
 	}
-	public boolean hasTarget(int[] array, int start, int end, int target) {
-		int mid = start + (end - start) / 2;
-		if (start > end) {
-			return false;
-		}
-		if (array[mid] == target) {
-			return true;
-		} else if (array[mid] > target) {
-			return hasTarget(array, start, mid - 1, target);
-		} else {
-			return hasTarget(array, mid + 1, end, target);
-		}
-	}
-	public int searchInt(int[] array, int start, int end, int target) {
-		return 0;
-	}
+	
 	public void printArray(int[] array) {
 		for (int item: array) {
 			System.out.print(item + ", ");
@@ -72,6 +111,16 @@ public class Solution {
 		int[] test03 = {1, 2};
 		int[] test04 = {1, 2, 3};
 		int[] test05 = {-1, 0, 1, 2, -1, -4};
+		int[] test06 = {-1, 0, 1, 2, -1, -2};
+		int[] test07 = {-5, 0, 5, 2, -1, -2};
+		int[] test08 = {0, 0, 0, 0, 0, 0};
+		
+//		int[] test09 = new int[501];
+//		for (int i = 0; i < 501; i ++) {
+//			test09[i] = i - 250;
+//		}
+		
+		int[] test09 = {-4,-2,-2,-2,0,1,2,2,2,3,3,4,4,6,6};
 		
 		System.out.println(solution.threeSum(test00));
 		System.out.println(solution.threeSum(test01));
@@ -79,6 +128,21 @@ public class Solution {
 		System.out.println(solution.threeSum(test03));
 		System.out.println(solution.threeSum(test04));
 		System.out.println(solution.threeSum(test05));
+		System.out.println(solution.threeSum(test06));
+		System.out.println(solution.threeSum(test07));
+		System.out.println(solution.threeSum(test08));
+		System.out.println(solution.threeSum(test09));
+		
+		System.out.println(solution.threeSum2(test09));
+		
+		int[] a1 = {1, 2, 3};
+		int[] a2 = {1, 2, 3};
+		
+		if (a1.hashCode() == a2.hashCode()) {
+			System.out.println("yes");
+		} else {
+			System.out.println("no");
+		}
 		
 	}
 }
