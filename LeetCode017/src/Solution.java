@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -12,6 +14,21 @@ import java.util.List;
  */
 public class Solution {
 	public List<String> letterCombinations(String digits) {
+		List<String> result = new ArrayList<String>();
+		if (digits == null || digits.length() < 2 || (digits.length() == 2 && (digits.contains("0") || digits.contains("1")))) {
+			return result;
+		}
+		
+		HashMap<Character, String> boardMap = new HashMap<Character, String>();
+		boardMap.put('2', "abc");
+		boardMap.put('3', "def");
+		boardMap.put('4', "ghi");
+		boardMap.put('5', "jkl");
+		boardMap.put('6', "mno");
+		boardMap.put('7', "pqrs");
+		boardMap.put('8', "tuv");
+		boardMap.put('9', "wxyz");
+		
 		char[][] board = new char[10][];
 		board[0] = new char[] {};
 		board[1] = new char[] {};
@@ -24,9 +41,35 @@ public class Solution {
 		board[8] = new char[] {'t', 'u', 'v'};
 		board[9] = new char[] {'w', 'x', 'y', 'z'};
 		
-		printMatrix(board);
+//		printMatrix(board);
 		
-		return null;
+		int resultsNum = 1;
+		for (int i = 0; i < digits.length(); i ++) {
+			if (digits.charAt(i) == '0' || digits.charAt(i) == '1') {
+				continue;
+			}
+			resultsNum *= board[(int)digits.charAt(i) - 48].length;
+		}
+		System.out.println("number of results should be: " + resultsNum + ", ");
+		
+		int digitsIndex = 0;
+		while (digits.charAt(digitsIndex) =='0' || digits.charAt(digitsIndex) == '1') {
+			digitsIndex ++;
+		}
+//		System.out.println((int)digits.charAt(digitsIndex) - 48);
+		for (int i = 0; i < board[(int)digits.charAt(digitsIndex) - 48].length; i ++) {
+			System.out.println(board[(int)digits.charAt(digitsIndex) - 48][i]);
+			
+		}
+		
+		for (int i = 0; i < digits.length() - 1; i ++) {
+			if (digits.charAt(i) == '0' || digits.charAt(i) == '1') {
+				continue;
+			}
+			
+		}
+		
+		return result;
 	}
 	public void printMatrix(char[][] matrix) {
 		for (char[] item: matrix) {
@@ -45,17 +88,21 @@ public class Solution {
 		String test01 = "";
 		String test02 = "1";
 		String test03 = "2";
-		String test04 = "23";
-		String test05 = "234";
-		String test06 = "23456789";
+		String test04 = "12";
+		String test05 = "123";
+		String test06 = "23";
+		String test07 = "234";
+		String test08 = "23456789";
 		
-		System.out.println(solution.letterCombinations(test00));
-		System.out.println(solution.letterCombinations(test01));
-		System.out.println(solution.letterCombinations(test02));
-		System.out.println(solution.letterCombinations(test03));
-		System.out.println(solution.letterCombinations(test04));
-		System.out.println(solution.letterCombinations(test05));
+//		System.out.println(solution.letterCombinations(test00));
+//		System.out.println(solution.letterCombinations(test01));
+//		System.out.println(solution.letterCombinations(test02));
+//		System.out.println(solution.letterCombinations(test03));
+//		System.out.println(solution.letterCombinations(test04));
+//		System.out.println(solution.letterCombinations(test05));
 		System.out.println(solution.letterCombinations(test06));
+//		System.out.println(solution.letterCombinations(test07));
+//		System.out.println(solution.letterCombinations(test08));
 		
 	}
 }
