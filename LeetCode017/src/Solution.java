@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 
@@ -15,69 +14,79 @@ import java.util.List;
 public class Solution {
 	public List<String> letterCombinations(String digits) {
 		List<String> result = new ArrayList<String>();
-		if (digits == null || digits.length() < 2 || (digits.length() == 2 && (digits.contains("0") || digits.contains("1")))) {
+		if (digits == null || digits.length() == 0 || (digits.length() == 1 && (digits.charAt(0) == '0' || digits.charAt(0) == '1'))) {
 			return result;
 		}
+		String[][] board = new String[10][];
+		board[0] = null;
+		board[1] = null;
+		board[2] = new String[] {"a", "b", "c"};
+		board[3] = new String[] {"d", "e", "f"};
+		board[4] = new String[] {"g", "h", "i"};
+		board[5] = new String[] {"j", "k", "l"};
+		board[6] = new String[] {"m", "n", "o"};
+		board[7] = new String[] {"p", "q", "r", "s"};
+		board[8] = new String[] {"t", "u", "v"};
+		board[9] = new String[] {"w", "x", "y", "z"};
 		
-		HashMap<Character, String> boardMap = new HashMap<Character, String>();
-		boardMap.put('2', "abc");
-		boardMap.put('3', "def");
-		boardMap.put('4', "ghi");
-		boardMap.put('5', "jkl");
-		boardMap.put('6', "mno");
-		boardMap.put('7', "pqrs");
-		boardMap.put('8', "tuv");
-		boardMap.put('9', "wxyz");
-		
-		char[][] board = new char[10][];
-		board[0] = new char[] {};
-		board[1] = new char[] {};
-		board[2] = new char[] {'a', 'b', 'c'};
-		board[3] = new char[] {'d', 'e', 'f'};
-		board[4] = new char[] {'g', 'h', 'i'};
-		board[5] = new char[] {'j', 'k', 'l'};
-		board[6] = new char[] {'m', 'n', 'o'};
-		board[7] = new char[] {'p', 'q', 'r', 's'};
-		board[8] = new char[] {'t', 'u', 'v'};
-		board[9] = new char[] {'w', 'x', 'y', 'z'};
-		
-//		printMatrix(board);
-		
-		int resultsNum = 1;
+		int length = digits.length();
 		for (int i = 0; i < digits.length(); i ++) {
 			if (digits.charAt(i) == '0' || digits.charAt(i) == '1') {
-				continue;
+				length --;
 			}
-			resultsNum *= board[(int)digits.charAt(i) - 48].length;
 		}
-		System.out.println("number of results should be: " + resultsNum + ", ");
-		
+		String[][] input = new String[length][];
+		int rowIndex = 0;
 		int digitsIndex = 0;
-		while (digits.charAt(digitsIndex) =='0' || digits.charAt(digitsIndex) == '1') {
-			digitsIndex ++;
-		}
-//		System.out.println((int)digits.charAt(digitsIndex) - 48);
-		for (int i = 0; i < board[(int)digits.charAt(digitsIndex) - 48].length; i ++) {
-			System.out.println(board[(int)digits.charAt(digitsIndex) - 48][i]);
-			
-		}
-		
-		for (int i = 0; i < digits.length() - 1; i ++) {
-			if (digits.charAt(i) == '0' || digits.charAt(i) == '1') {
-				continue;
+		while (rowIndex < input.length && digitsIndex < digits.length()) {
+			if (digits.charAt(digitsIndex) == '0' || digits.charAt(digitsIndex) == '1')	{
+				digitsIndex ++;
+			} else {
+				input[rowIndex] = board[(int)digits.charAt(digitsIndex) - 48];
+				digitsIndex ++;
+				rowIndex ++;
 			}
-			
+		}
+		if (input.length == 1) {
+			for (int i = 0; i < input[0].length; i ++) {
+				result.add(input[0][i]);
+			}
+			return result;
+		}
+		String[] temp = matrixCombin(input[0], input[1]);
+		for (int i = 2; i < input.length; i ++) {
+			temp = matrixCombin(temp, input[i]);
 		}
 		
+		for (int i = 0; i < temp.length; i ++) {
+			result.add(temp[i]);
+		}
 		return result;
 	}
-	public void printMatrix(char[][] matrix) {
-		for (char[] item: matrix) {
+	public String[] matrixCombin(String[] matrix1, String[] matrix2) {
+		String[] result = new String[matrix1.length * matrix2.length];
+		int resultIndex = 0;
+		while (resultIndex < result.length) {
+			int matrixIndex1 = 0;
+			while (matrixIndex1 < matrix1.length) {
+				int matrixIndex2 = 0;
+				while (matrixIndex2 < matrix2.length) {
+					result[resultIndex] = matrix1[matrixIndex1] + matrix2[matrixIndex2];
+					resultIndex ++;
+					matrixIndex2 ++;
+				}
+				matrixIndex1 ++;
+			}
+		}
+		return result;
+	}
+	public void printMatrix(String[][] matrix) {
+		for (String[] item: matrix) {
 			printArray(item);
 		}
 	}
-	public void printArray(char[] array) {
-		for (char item: array) {
+	public void printArray(String[] array) {
+		for (String item: array) {
 			System.out.print(item + ", ");
 		}
 		System.out.println();
@@ -94,15 +103,15 @@ public class Solution {
 		String test07 = "234";
 		String test08 = "23456789";
 		
-//		System.out.println(solution.letterCombinations(test00));
-//		System.out.println(solution.letterCombinations(test01));
-//		System.out.println(solution.letterCombinations(test02));
-//		System.out.println(solution.letterCombinations(test03));
-//		System.out.println(solution.letterCombinations(test04));
-//		System.out.println(solution.letterCombinations(test05));
+		System.out.println(solution.letterCombinations(test00));
+		System.out.println(solution.letterCombinations(test01));
+		System.out.println(solution.letterCombinations(test02));
+		System.out.println(solution.letterCombinations(test03));
+		System.out.println(solution.letterCombinations(test04));
+		System.out.println(solution.letterCombinations(test05));
 		System.out.println(solution.letterCombinations(test06));
-//		System.out.println(solution.letterCombinations(test07));
-//		System.out.println(solution.letterCombinations(test08));
+		System.out.println(solution.letterCombinations(test07));
+		System.out.println(solution.letterCombinations(test08));
 		
 	}
 }
