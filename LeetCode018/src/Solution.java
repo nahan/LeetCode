@@ -37,6 +37,6 @@ public class Solution {
 		System.out.println(solution.fourSum(test04, 1));
 		System.out.println(solution.fourSum(test05, 1));
 		System.out.println(solution.fourSum(test06, 1));
-		System.out.println(solution.fourSum(test07, 1));
+		System.out.println(solution.fourSum(test07, 0));
 	}
 }
