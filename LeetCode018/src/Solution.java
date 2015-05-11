@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -17,8 +19,39 @@ import java.util.List;
  */
 public class Solution {
 	public List<List<Integer>> fourSum(int[] nums, int target) {
-		return null;
+		List<List<Integer>> result = new ArrayList<List<Integer>>();
+		if (nums == null || nums.length < 4) {
+			return result;
+		}
+		Arrays.sort(nums);
+		for (int i = 0; i < nums.length - 3; i ++) {
+			for (int j = i + 1; j < nums.length - 2; j ++) {
+				int head = j + 1;
+				int tail = nums.length - 1;
+				while (head < tail) {
+					int tempSum = nums[i] + nums[j] + nums[head] + nums[tail];
+					if (tempSum == target) {
+						List<Integer> item = new ArrayList<Integer>();
+						item.add(nums[i]);
+						item.add(nums[j]);
+						item.add(nums[head]);
+						item.add(nums[tail]);
+						if (result.contains(item) == false) {
+							result.add(item);
+						} 
+						head ++;
+						tail --;
+					} else if (tempSum < target) {
+						head ++;
+					} else {
+						tail --;
+					}
+				}
+			}
+		}
+		return result;
 	}
+	
 	public static void main(String[] args) {
 		Solution solution = new Solution();
 		int[] test00 = null;
@@ -29,6 +62,8 @@ public class Solution {
 		int[] test05 = {-1, 0, 1, 2, -1, -4};
 		int[] test06 = {-1, 2, 1, -4};
 		int[] test07 = {1, 0, -1, 0, -2, 2};
+		int[] test08 = {-3,-2,-1,0,0,1,2,3};
+		int[] test09 = {-5,-4,-3,-2,-1,0,0,1,2,3,4,5};
 		
 		System.out.println(solution.fourSum(test00, 1));
 		System.out.println(solution.fourSum(test01, 1));
@@ -38,5 +73,7 @@ public class Solution {
 		System.out.println(solution.fourSum(test05, 1));
 		System.out.println(solution.fourSum(test06, 1));
 		System.out.println(solution.fourSum(test07, 0));
+		System.out.println(solution.fourSum(test08, 0));
+		System.out.println(solution.fourSum(test09, 0));
 	}
 }
