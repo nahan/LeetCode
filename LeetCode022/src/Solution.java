@@ -54,16 +54,44 @@ public class Solution {
 			for (int i = 1; i < parenthesis.length; i ++) {
 				parenthesis[i] = ')';
 			}
-			System.out.println(charsToString(parenthesis));
-			findValidPosition(index, parenthesis);
-			System.out.println(charsToString(parenthesis));
+			int times = 1;
+			System.out.println("here: " + index);
+			System.out.println("before: " + charsToString(parenthesis));
+			findValidPosition(index, parenthesis, result, times);
+			System.out.println("after: " + charsToString(parenthesis));
 		}
 		return result;
 	}
-	public void findValidPosition(int index, char[] parenthesis) {
-		if (index == parenthesis.length - 1) {
-			
+	public void findValidPosition(int index, char[] parenthesis, List<String> result, int times) {
+		System.out.println("recuring: times = " + times);
+		System.out.println(charsToString(parenthesis));
+		if (index == parenthesis.length - 1 || times == parenthesis.length / 2) {
+			System.out.println("here, times = " + times);
+			System.out.println(charsToString(parenthesis));
+			result.add(charsToString(parenthesis));
+			times = 1;
+			return;
 		}
+		for (int i = index; i < parenthesis.length - 1; i ++) {
+			if (isValid(i, parenthesis) == true) {
+				parenthesis[i] = '(';
+				times ++;
+				findValidPosition(i + 1, parenthesis, result, times);
+				parenthesis[i] = ')';
+			}
+		}
+	}
+	public boolean isValid(int index, char[] parenthesis) {
+		int numOfLeft = 1;
+		int numOfRight = 0;
+		for (int i = index - 1; i >= 0; i --) {
+			if (parenthesis[i] == '(') {
+				numOfLeft ++;
+			} else {
+				numOfRight ++;
+			}
+		}
+		return numOfLeft >= numOfRight;
 	}
 	public String charsToString(char[] charList) {
 		StringBuilder builder = new StringBuilder();
@@ -73,13 +101,9 @@ public class Solution {
 		return builder.toString();
 	}
 
-	public boolean isValid(int index) {
-		return false;
-	}
-
 	public static void main(String[] args) {
 		Solution solution = new Solution();
-		System.out.println(solution.generateParenthesisBT(1));
+		System.out.println(solution.generateParenthesisBT(3));
 
 	}
 }
