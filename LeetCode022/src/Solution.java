@@ -54,29 +54,24 @@ public class Solution {
 			for (int i = 1; i < parenthesis.length; i ++) {
 				parenthesis[i] = ')';
 			}
-			int times = 1;
 			System.out.println("here: " + index);
 			System.out.println("before: " + charsToString(parenthesis));
-			findValidPosition(index, parenthesis, result, times);
+			findValidPosition(index, parenthesis, result);
 			System.out.println("after: " + charsToString(parenthesis));
 		}
 		return result;
 	}
-	public void findValidPosition(int index, char[] parenthesis, List<String> result, int times) {
-		System.out.println("recuring: times = " + times);
+	public void findValidPosition(int index, char[] parenthesis, List<String> result) {
 		System.out.println(charsToString(parenthesis));
-		if (index == parenthesis.length - 1 || times == parenthesis.length / 2) {
-			System.out.println("here, times = " + times);
+		if (index == parenthesis.length - 1) {
 			System.out.println(charsToString(parenthesis));
 			result.add(charsToString(parenthesis));
-			times = 1;
 			return;
 		}
 		for (int i = index; i < parenthesis.length - 1; i ++) {
 			if (isValid(i, parenthesis) == true) {
 				parenthesis[i] = '(';
-				times ++;
-				findValidPosition(i + 1, parenthesis, result, times);
+				findValidPosition(i + 1, parenthesis, result);
 				parenthesis[i] = ')';
 			}
 		}
