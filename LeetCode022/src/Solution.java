@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Stack;
 
 /**
  * Given n pairs of parentheses, write a function to generate all combinations
@@ -56,37 +57,45 @@ public class Solution {
 			}
 			System.out.println("here: " + index);
 			System.out.println("before: " + charsToString(parenthesis));
-			findValidPosition(index, parenthesis, result);
+			int time = 1;
+			findValidPosition(index, parenthesis, result, time);
 			System.out.println("after: " + charsToString(parenthesis));
 		}
 		return result;
 	}
-	public void findValidPosition(int index, char[] parenthesis, List<String> result) {
+	public void findValidPosition(int index, char[] parenthesis, List<String> result, int time) {
 		System.out.println(charsToString(parenthesis));
 		if (index == parenthesis.length - 1) {
-			System.out.println(charsToString(parenthesis));
+			System.out.println("yes, " + charsToString(parenthesis));
 			result.add(charsToString(parenthesis));
 			return;
 		}
 		for (int i = index; i < parenthesis.length - 1; i ++) {
-			if (isValid(i, parenthesis) == true) {
+			if (isValid(i, parenthesis, time) == true) {
 				parenthesis[i] = '(';
-				findValidPosition(i + 1, parenthesis, result);
+				findValidPosition(i + 1, parenthesis, result, time + 1);
 				parenthesis[i] = ')';
 			}
 		}
 	}
-	public boolean isValid(int index, char[] parenthesis) {
-		int numOfLeft = 1;
-		int numOfRight = 0;
-		for (int i = index - 1; i >= 0; i --) {
+	public boolean isValid(int index, char[] parenthesis, int time) {
+		if (time > parenthesis.length / 2) {
+			return false;
+		}
+		Stack<Character> temp = new Stack<Character>();
+		temp.push(parenthesis[0]);
+		for (int i = 1; i < index; i ++) {
 			if (parenthesis[i] == '(') {
-				numOfLeft ++;
+				temp.push(parenthesis[i]);
 			} else {
-				numOfRight ++;
+				if (temp.empty() == true) {
+					return false;
+				} else {
+					temp.pop();
+				}
 			}
 		}
-		return numOfLeft >= numOfRight;
+		return temp.contains(')') == false;
 	}
 	public String charsToString(char[] charList) {
 		StringBuilder builder = new StringBuilder();
