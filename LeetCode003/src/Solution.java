@@ -1,7 +1,4 @@
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 
 /**
@@ -9,6 +6,20 @@ import java.util.Map;
  * For example, 
  * the longest substring without repeating letters for "abcabcbb" is "abc", which the length is 3. 
  * For "bbbbb" the longest substring is "b", with the length of 1.
+ */
+
+/**
+ * We can improve the time complexity by reusing previous computation as we iterate through the array.
+ * Suppose we know the longest duplicated-free subarray ending at a given index.
+ * The longest duplicate-free subarray ending at the next index is either
+ * 
+ * the previous subarray appended with the element at the next index, 
+ * if that element does not appear in the longest duplicate-free subarray at the current index.
+ * 
+ * Otherwise it is the subarray beginning at the most recent occurrence of the element at the next index to the next index.
+ * 
+ * To perform this case analysis as we iterate, all we need is a hash table storing the most recent occurrence of each element, 
+ * and the longest duplicate-free subarray ending at the current element.
  */
 public class Solution {
 	public int lengthOfLongestSubstring(String s) {
@@ -18,68 +29,26 @@ public class Solution {
 		if (s.length() < 2) {
 			return s.length();
 		}
-		Map<Character, Integer> hash = new HashMap<Character, Integer>();
-		int max = 1;
-		int headIndex = 0;
-		int tailIndex = 1;
-		hash.put(s.charAt(headIndex), headIndex);
-		while (headIndex < s.length() && tailIndex < s.length()) {
-			if (hash.containsKey(s.charAt(tailIndex)) == true) {
-//				System.out.println("before: head is " + headIndex);
-				headIndex = hash.get(s.charAt(tailIndex)) + 1;
-//				System.out.println("after: head is " + headIndex);
-				hash.clear();
-				hash.put(s.charAt(tailIndex), tailIndex);
-				max = Math.max((tailIndex - headIndex), max);
-				tailIndex ++;
-			} else {
-				hash.put(s.charAt(tailIndex), tailIndex);
-				tailIndex ++;
-			}
-			
-//			try {
-//				Thread.sleep(500);
-//			} catch (InterruptedException e) {
-//				e.printStackTrace();
-//			}
-		}
-		return max;
-	}
-	public int lengthOfLongestSubstring2(String s) {
-		if (s == null) {
-			return 0;
-		}
-		if (s.length() < 2) {
-			return s.length();
-		}
-		HashMap<Character, Boolean> hash = new HashMap<Character, Boolean>();
-		int max = 0;
-		for (int i = 0; i < s.length(); i ++) {
-//			System.out.println("first loop, i = " + i);
-			int tempMax = 0;
-			for (int j = i; j < s.length(); j ++) {
-//				System.out.println("second loop, j = " + j + ", char is: " + s.charAt(j));
-				if (hash.containsKey(s.charAt(j)) && hash.get(s.charAt(j)) == true) {
-//					System.out.println("clear hash");
-					hash.clear();
-					break;
-				} else {
-//					System.out.println("go ahead");
-					hash.put(s.charAt(j), true);
-					tempMax ++;
+		HashMap<Character, Integer> mostRecentOccur = new HashMap<Character, Integer>();
+		int longestStart = 0;
+		int result = 0;
+		for (int index = 0; index < s.length(); index ++) {
+			if (mostRecentOccur.containsKey(s.charAt(index)) == true) {
+				if (mostRecentOccur.get(s.charAt(index)) >= longestStart) {
+					longestStart = mostRecentOccur.get(s.charAt(index)) + 1;
 				}
-				max = max > tempMax ? max : tempMax;
-//				System.out.println("this max is: " + max);
 			}
+			mostRecentOccur.put(s.charAt(index), index);
+			result = Math.max(result, index - longestStart + 1);
 		}
-		return max;
+		return result;
 	}
 	public static void main(String[] args) {
 		Solution solution = new Solution();
 		String test00 = null;
 		String test01 = "";
 		String test02 = " ";
-		String test03 = "Hello World!";
+		String test03 = "Hello_World!";
 		String test04 = "HelloHello";
 		String test05 = "bbbbbbb";
 		String test06 = "abcabcbb";
@@ -87,42 +56,34 @@ public class Solution {
 		
 		System.out.println("++++++++++++++++++++++++++++++++++++++++++++ entering test case 00");
 		System.out.println(test00 + " => " + solution.lengthOfLongestSubstring(test00));
-		System.out.println(test00 + " => " + solution.lengthOfLongestSubstring2(test00));
 		System.out.println("-------------------------------------------- leaving test case 00\n");
 		
 		System.out.println("++++++++++++++++++++++++++++++++++++++++++++ entering test case 01");
 		System.out.println(test01 + " => " + solution.lengthOfLongestSubstring(test01));
-		System.out.println(test01 + " => " + solution.lengthOfLongestSubstring2(test01));
 		System.out.println("-------------------------------------------- leaving test case 01\n");
 		
 		System.out.println("++++++++++++++++++++++++++++++++++++++++++++ entering test case 02");
 		System.out.println(test02 + " => " + solution.lengthOfLongestSubstring(test02));
-		System.out.println(test02 + " => " + solution.lengthOfLongestSubstring2(test02));
 		System.out.println("-------------------------------------------- leaving test case 02\n");
 		
 		System.out.println("++++++++++++++++++++++++++++++++++++++++++++ entering test case 03");
 		System.out.println(test03 + " => " + solution.lengthOfLongestSubstring(test03));
-		System.out.println(test03 + " => " + solution.lengthOfLongestSubstring2(test03));
 		System.out.println("-------------------------------------------- leaving test case 03\n");
 		
 		System.out.println("++++++++++++++++++++++++++++++++++++++++++++ entering test case 04");
 		System.out.println(test04 + " => " + solution.lengthOfLongestSubstring(test04));
-		System.out.println(test04 + " => " + solution.lengthOfLongestSubstring2(test04));
 		System.out.println("-------------------------------------------- leaving test case 04\n");
 		
 		System.out.println("++++++++++++++++++++++++++++++++++++++++++++ entering test case 05");
 		System.out.println(test05 + " => " + solution.lengthOfLongestSubstring(test05));
-		System.out.println(test05 + " => " + solution.lengthOfLongestSubstring2(test05));
 		System.out.println("-------------------------------------------- leaving test case 05\n");
 		
 		System.out.println("++++++++++++++++++++++++++++++++++++++++++++ entering test case 06");
 		System.out.println(test06 + " => " + solution.lengthOfLongestSubstring(test06));
-		System.out.println(test06 + " => " + solution.lengthOfLongestSubstring2(test06));
 		System.out.println("-------------------------------------------- leaving test case 06\n");
 		
 		System.out.println("++++++++++++++++++++++++++++++++++++++++++++ entering test case 07");
 		System.out.println(test07 + " => \n" + solution.lengthOfLongestSubstring(test07));
-		System.out.println(test07 + " => \n" + solution.lengthOfLongestSubstring2(test07));
 		System.out.println("-------------------------------------------- leaving test case 07\n");
 	}
 }
