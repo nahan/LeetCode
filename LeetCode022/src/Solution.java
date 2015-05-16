@@ -11,6 +11,23 @@ import java.util.Stack;
 public class Solution {
 	public List<String> generateParenthesis(int n) {
 		List<String> result = new ArrayList<String>();
+		directedGenerateBalancedParenthsises(n, n, "", result);
+		return result;
+	}
+	public void directedGenerateBalancedParenthsises(int leftParensNeeded, int rightParensNeeded, String validPrefix, List<String> result) {
+		if (leftParensNeeded == 0 && rightParensNeeded == 0) {
+			result.add(validPrefix);
+			return;
+		}
+		if (leftParensNeeded > 0) {
+			directedGenerateBalancedParenthsises(leftParensNeeded - 1, rightParensNeeded, validPrefix + "(", result);
+		}
+		if (leftParensNeeded < rightParensNeeded) {
+			directedGenerateBalancedParenthsises(leftParensNeeded, rightParensNeeded - 1, validPrefix + ")", result);
+		}
+	}
+	public List<String> generateParenthesis1(int n) {
+		List<String> result = new ArrayList<String>();
 		for (int i = 0; i < n; i++) {
 			if (result.isEmpty() == true) {
 				result.add("()");
@@ -107,7 +124,7 @@ public class Solution {
 
 	public static void main(String[] args) {
 		Solution solution = new Solution();
-		System.out.println(solution.generateParenthesisBT(3));
+		System.out.println(solution.generateParenthesis(4));
 
 	}
 }
