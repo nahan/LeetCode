@@ -23,11 +23,8 @@ import java.util.HashMap;
  */
 public class Solution {
 	public int lengthOfLongestSubstring(String s) {
-		if (s == null) {
-			return 0;
-		}
-		if (s.length() < 2) {
-			return s.length();
+		if (s == null || s.length() < 2) {
+			return s == null ? 0 : s.length();
 		}
 		HashMap<Character, Integer> mostRecentOccur = new HashMap<Character, Integer>();
 		int longestStart = 0;
