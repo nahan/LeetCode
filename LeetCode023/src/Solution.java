@@ -9,6 +9,26 @@ class ListNode {
 		val = x;
 	}
 }
+@SuppressWarnings("hiding")
+class MinHeap<ListNode> {
+	MinHeap(int length) {
+	}
+
+	public void insert(int index, ListNode listNode) {
+	}
+
+	public boolean isEmpty() {
+		return false;
+	}
+
+	public ListNode min() {
+		return null;
+	}
+
+	public int delMin() {
+		return 0;
+	}
+}
 public class Solution {
 	public ListNode mergeKLists(ListNode[] lists) {
 		if (lists == null) {
@@ -17,9 +37,21 @@ public class Solution {
 		if (lists.length == 1) {
 			return lists[0];
 		}
-		
-		ListNode head = null;
-		return head;
+		ListNode result = new ListNode(0);
+		MinHeap<ListNode> heap = new MinHeap<ListNode>(lists.length);
+		for (int i = 0; i < lists.length; i ++) {
+			if (lists[i] != null) {
+				heap.insert(i, lists[i]);
+			}
+		}
+		while (heap.isEmpty() == false) {
+			result.next = heap.min();
+			int i = heap.delMin();
+			if (lists[i] != null) {
+				heap.insert(i, lists[i]);
+			}
+		}
+		return result.next;
 	}
 	public void printList(ListNode node) {
 		if (node != null) {
