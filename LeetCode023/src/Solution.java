@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.Arrays;
+
 /**
  * Merge k sorted linked lists and return it as one sorted list. Analyze and describe its complexity.
  */
@@ -9,26 +12,6 @@ class ListNode {
 		val = x;
 	}
 }
-@SuppressWarnings("hiding")
-class MinHeap<ListNode> {
-	MinHeap(int length) {
-	}
-
-	public void insert(int index, ListNode listNode) {
-	}
-
-	public boolean isEmpty() {
-		return false;
-	}
-
-	public ListNode min() {
-		return null;
-	}
-
-	public int delMin() {
-		return 0;
-	}
-}
 public class Solution {
 	public ListNode mergeKLists(ListNode[] lists) {
 		if (lists == null) {
@@ -38,20 +21,30 @@ public class Solution {
 			return lists[0];
 		}
 		ListNode result = new ListNode(0);
-		MinHeap<ListNode> heap = new MinHeap<ListNode>(lists.length);
+		ListNode resultIndex = result.next;
+		ListNode[] pq = new ListNode[lists.length];
+		ListNode[] nodes = (ListNode[]) new ListNode[lists.length + 1];
 		for (int i = 0; i < lists.length; i ++) {
 			if (lists[i] != null) {
-				heap.insert(i, lists[i]);
+				pq[i] = lists[i];
 			}
 		}
-		while (heap.isEmpty() == false) {
-			result.next = heap.min();
+		while (isEmpty(pq) == false) {
 			int i = heap.delMin();
 			if (lists[i] != null) {
 				heap.insert(i, lists[i]);
 			}
+			resultIndex = resultIndex.next;
 		}
 		return result.next;
+	}
+	public boolean isEmpty(ListNode[] pq) {
+		for (ListNode item: pq) {
+			if (item != null) {
+				return false;
+			}
+		}
+		return true;
 	}
 	public void printList(ListNode node) {
 		if (node != null) {
