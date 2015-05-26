@@ -1,5 +1,7 @@
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.PriorityQueue;
 
 /**
  * Merge k sorted linked lists and return it as one sorted list. Analyze and describe its complexity.
@@ -12,6 +14,41 @@ class ListNode {
 		val = x;
 	}
 }
+class Compare implements Comparator<ListNode> {
+	public int compare (ListNode node1, ListNode node2) {
+		if (node1.val < node2.val) {
+			return -1;
+		}
+		if (node1.val > node2.val) {
+			return 1;
+		}
+		return 0;
+	}
+}
+class MinHeap {
+	private ArrayList<ListNode> nodes;
+	private int size = 0;
+	public MinHeap(int length) {
+		nodes = new ArrayList<ListNode>(length);
+		for (int index = 0; index < length; index ++) {
+			nodes.add(index, null);
+		}
+	}
+	public boolean isEmpty() {
+		return size == 0;
+	}
+	public boolean containsNodeAtIndex(int index) {
+		return nodes.get(index) != null;
+	}
+	public void insertNodeAtIndex(int index, ListNode node) {
+		size ++;
+		nodes.set(index, node);
+//		swim(size);
+	}
+	public ListNode getMin() {
+		return nodes.get(0);
+	}
+}
 public class Solution {
 	public ListNode mergeKLists(ListNode[] lists) {
 		if (lists == null) {
@@ -20,23 +57,13 @@ public class Solution {
 		if (lists.length == 1) {
 			return lists[0];
 		}
-		ListNode result = new ListNode(0);
-		ListNode resultIndex = result.next;
-		ListNode[] pq = new ListNode[lists.length];
-		ListNode[] nodes = (ListNode[]) new ListNode[lists.length + 1];
+		ListNode result = null;
+		ListNode resultIndex = result;
+		PriorityQueue<ListNode> heap = new PriorityQueue<ListNode>();
 		for (int i = 0; i < lists.length; i ++) {
-			if (lists[i] != null) {
-				pq[i] = lists[i];
-			}
+			
 		}
-		while (isEmpty(pq) == false) {
-			int i = heap.delMin();
-			if (lists[i] != null) {
-				heap.insert(i, lists[i]);
-			}
-			resultIndex = resultIndex.next;
-		}
-		return result.next;
+		return result;
 	}
 	public boolean isEmpty(ListNode[] pq) {
 		for (ListNode item: pq) {
@@ -106,17 +133,46 @@ public class Solution {
 		solution.printList(node055);
 		solution.printList(node099);
 		
-		System.out.println("++++++++++++++++++++++++++++++++++++++ entering test cases");
-		System.out.print("expect: \" \" => ");
-		solution.printList(solution.mergeKLists(test00));
-		System.out.print("expect: \"0, \" => ");
-		solution.printList(solution.mergeKLists(test01));
-		System.out.print("expect: \"1, 2, \" => ");
-		solution.printList(solution.mergeKLists(test02));
-		System.out.print("expect: \"1, 2, \" => ");
-		solution.printList(solution.mergeKLists(test03));
-		System.out.print("expect: \"0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, \" => ");
-		solution.printList(solution.mergeKLists(test04));
-		System.out.println("-------------------------------------- leaving test cases");
+		System.out.println("==============================================");
+		PriorityQueue<ListNode> pq = new PriorityQueue<ListNode>(1, new Compare());
+		pq.add(new ListNode(5));
+		pq.add(new ListNode(4));
+		pq.add(new ListNode(0));
+		pq.add(new ListNode(2));
+		pq.add(new ListNode(1));
+		pq.add(new ListNode(0));
+		System.out.println(pq.iterator().next().val);
+		
+		ArrayList<ListNode> test = new ArrayList<ListNode>(3);
+		for (int i = 0; i < 3; i ++) {
+			test.add(null);
+		}
+		System.out.println("size is: " + test.size());
+		test.set(1, new ListNode(0));
+		System.out.println("size is: " + test.size());
+		test.set(2, new ListNode(1));
+		System.out.println("size is: " + test.size());
+		test.set(2, new ListNode(2));
+		System.out.println("size is: " + test.size());
+		test.set(0, new ListNode(3));
+		System.out.println("size is: " + test.size());
+		Iterator<ListNode> it = test.iterator();
+		while (it.hasNext()) {
+			System.out.print(it.next().val + ", ");
+		}
+		
+		
+//		System.out.println("++++++++++++++++++++++++++++++++++++++ entering test cases");
+//		System.out.print("expect: \" \" => ");
+//		solution.printList(solution.mergeKLists(test00));
+//		System.out.print("expect: \"0, \" => ");
+//		solution.printList(solution.mergeKLists(test01));
+//		System.out.print("expect: \"1, 2, \" => ");
+//		solution.printList(solution.mergeKLists(test02));
+//		System.out.print("expect: \"1, 2, \" => ");
+//		solution.printList(solution.mergeKLists(test03));
+//		System.out.print("expect: \"0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, \" => ");
+//		solution.printList(solution.mergeKLists(test04));
+//		System.out.println("-------------------------------------- leaving test cases");
 	}
 }
