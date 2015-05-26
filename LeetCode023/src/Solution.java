@@ -1,6 +1,5 @@
-import java.util.ArrayList;
+
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.PriorityQueue;
 
 /**
@@ -25,30 +24,6 @@ class Compare implements Comparator<ListNode> {
 		return 0;
 	}
 }
-class MinHeap {
-	private ArrayList<ListNode> nodes;
-	private int size = 0;
-	public MinHeap(int length) {
-		nodes = new ArrayList<ListNode>(length);
-		for (int index = 0; index < length; index ++) {
-			nodes.add(index, null);
-		}
-	}
-	public boolean isEmpty() {
-		return size == 0;
-	}
-	public boolean containsNodeAtIndex(int index) {
-		return nodes.get(index) != null;
-	}
-	public void insertNodeAtIndex(int index, ListNode node) {
-		size ++;
-		nodes.set(index, node);
-//		swim(size);
-	}
-	public ListNode getMin() {
-		return nodes.get(0);
-	}
-}
 public class Solution {
 	public ListNode mergeKLists(ListNode[] lists) {
 		if (lists == null) {
@@ -57,21 +32,24 @@ public class Solution {
 		if (lists.length == 1) {
 			return lists[0];
 		}
-		ListNode result = null;
+		
+		ListNode result = new ListNode(0);
 		ListNode resultIndex = result;
-		PriorityQueue<ListNode> heap = new PriorityQueue<ListNode>();
+		PriorityQueue<ListNode> heap = new PriorityQueue<ListNode>(1, new Compare());
 		for (int i = 0; i < lists.length; i ++) {
-			
-		}
-		return result;
-	}
-	public boolean isEmpty(ListNode[] pq) {
-		for (ListNode item: pq) {
-			if (item != null) {
-				return false;
+			if (lists[i] != null) {
+				heap.add(lists[i]);
 			}
 		}
-		return true;
+		while (heap.isEmpty() == false) {
+			resultIndex.next = heap.poll();
+			ListNode head = resultIndex.next.next;
+			if (head != null) {
+				heap.add(head);
+			}
+			resultIndex = resultIndex.next;
+		}
+		return result.next;
 	}
 	public void printList(ListNode node) {
 		if (node != null) {
@@ -140,39 +118,21 @@ public class Solution {
 		pq.add(new ListNode(0));
 		pq.add(new ListNode(2));
 		pq.add(new ListNode(1));
-		pq.add(new ListNode(0));
+		pq.add(new ListNode(100));
 		System.out.println(pq.iterator().next().val);
+		System.out.println("==============================================");
 		
-		ArrayList<ListNode> test = new ArrayList<ListNode>(3);
-		for (int i = 0; i < 3; i ++) {
-			test.add(null);
-		}
-		System.out.println("size is: " + test.size());
-		test.set(1, new ListNode(0));
-		System.out.println("size is: " + test.size());
-		test.set(2, new ListNode(1));
-		System.out.println("size is: " + test.size());
-		test.set(2, new ListNode(2));
-		System.out.println("size is: " + test.size());
-		test.set(0, new ListNode(3));
-		System.out.println("size is: " + test.size());
-		Iterator<ListNode> it = test.iterator();
-		while (it.hasNext()) {
-			System.out.print(it.next().val + ", ");
-		}
-		
-		
-//		System.out.println("++++++++++++++++++++++++++++++++++++++ entering test cases");
-//		System.out.print("expect: \" \" => ");
-//		solution.printList(solution.mergeKLists(test00));
-//		System.out.print("expect: \"0, \" => ");
-//		solution.printList(solution.mergeKLists(test01));
-//		System.out.print("expect: \"1, 2, \" => ");
-//		solution.printList(solution.mergeKLists(test02));
-//		System.out.print("expect: \"1, 2, \" => ");
-//		solution.printList(solution.mergeKLists(test03));
-//		System.out.print("expect: \"0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, \" => ");
-//		solution.printList(solution.mergeKLists(test04));
-//		System.out.println("-------------------------------------- leaving test cases");
+		System.out.println("++++++++++++++++++++++++++++++++++++++ entering test cases");
+		System.out.print("expect: \" \" => ");
+		solution.printList(solution.mergeKLists(test00));
+		System.out.print("expect: \"0, \" => ");
+		solution.printList(solution.mergeKLists(test01));
+		System.out.print("expect: \"1, 2, \" => ");
+		solution.printList(solution.mergeKLists(test02));
+		System.out.print("expect: \"1, 2, \" => ");
+		solution.printList(solution.mergeKLists(test03));
+		System.out.print("expect: \"0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, \" => ");
+		solution.printList(solution.mergeKLists(test04));
+		System.out.println("-------------------------------------- leaving test cases");
 	}
 }
