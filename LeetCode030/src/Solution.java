@@ -21,6 +21,9 @@ public class Solution {
 		if (s == null || s.length() == 0 || words == null || words.length == 0) {
 			return result;
 		}
+		for (int i = 0; i < s.length(); i ++) {
+			
+		}
 		HashMap<Integer, Integer> lengthMap = new HashMap<Integer, Integer>();
 		int from = 0;
 		while (from < s.length()) {
@@ -30,8 +33,10 @@ public class Solution {
 				if (index != -1) {
 					lengthMap.put(index, words[i].length());
 					start = start < index ? start : index;
+					
 				}
 			}
+			System.out.println(lengthMap);
 			if (lengthMap.size() != words.length) {
 				lengthMap.clear();
 				break;
@@ -43,6 +48,7 @@ public class Solution {
 				for (Entry<Integer, Integer> pair: lengthMap.entrySet()) {
 					int index = pair.getKey();
 					int length = pair.getValue();
+					System.out.println("key: " + index + ", value" + length);
 					if (index != head) {
 						result.remove(result.size() - 1);
 						break;
