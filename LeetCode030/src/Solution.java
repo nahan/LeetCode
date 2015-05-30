@@ -1,7 +1,7 @@
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.TreeMap;
 
 /**
  * You are given a string, s, and a list of words, words, that are all of the same length. 
@@ -21,86 +21,101 @@ public class Solution {
 		if (s == null || s.length() == 0 || words == null || words.length == 0) {
 			return result;
 		}
-		for (int i = 0; i < s.length(); i ++) {
-			
+		int totalLength = 0;
+		for (int i = 0; i < words.length; i ++) {
+			totalLength += words[i].length();
 		}
-		HashMap<Integer, Integer> lengthMap = new HashMap<Integer, Integer>();
+		TreeMap<Integer, String> lengthMap = new TreeMap<Integer, String>();
 		int from = 0;
-		while (from < s.length()) {
-			int start = s.length() - 1;
+		while (from <= s.length() - totalLength) {
+//			System.out.println("this time we start from: " + from);
+			int headIndex = s.length() - 1;
+			int tailIndex = 0;
 			for (int i = 0; i < words.length; i ++) {
-				int index = s.indexOf(words[i], from);
+				int index = findIndex(s, from, words[i], lengthMap);
 				if (index != -1) {
-					lengthMap.put(index, words[i].length());
-					start = start < index ? start : index;
-					
+					lengthMap.put(index, words[i]);
+					headIndex = headIndex < index ? headIndex : index;
+					tailIndex = tailIndex > index + words[i].length() ? tailIndex : index + words[i].length();
 				}
 			}
-			System.out.println(lengthMap);
-			if (lengthMap.size() != words.length) {
+//			System.out.println(lengthMap);
+//			System.out.println("head: " + headIndex + ", tail: " + tailIndex);
+			if (tailIndex - headIndex != totalLength || lengthMap.size() != words.length) {
+				from += lengthMap.get(headIndex) != null ? lengthMap.get(headIndex).length() : 1;
 				lengthMap.clear();
-				break;
+				continue;
+			}
+			String subString = "";
+			int startIndex = s.length();
+			for (Entry<Integer, String> item: lengthMap.entrySet()) {
+				subString += item.getValue();
+				startIndex = startIndex < item.getKey() ? startIndex : item.getKey();
+			}
+//			System.out.println(subString);
+//			System.out.println(startIndex);
+			if (subString.equals("") == false && s.indexOf(subString, from) != -1) {
+				result.add(startIndex);
+				from = startIndex + subString.length();
+//				System.out.println("from: " + from);
 			} else {
-				int head = start;
-				if (result.contains(start) == false) {
-					result.add(start);
-				}
-				for (Entry<Integer, Integer> pair: lengthMap.entrySet()) {
-					int index = pair.getKey();
-					int length = pair.getValue();
-					System.out.println("key: " + index + ", value" + length);
-					if (index != head) {
-						result.remove(result.size() - 1);
-						break;
-					}
-					head += length;
-				}
-//				for (int i = 0; i < words.length; i ++) {
-//					from += words[i].length();
-//				}
-				from ++;
-				lengthMap.clear();
+				from += lengthMap.get(headIndex) != null ? lengthMap.get(headIndex).length() : 1;
 			}
+			lengthMap.clear();
 		}
 		return result;
+	}
+	public int findIndex(String s, int from, String target, TreeMap<Integer, String> hash) {
+		if (from >= s.length()) {
+			return -1;
+		}
+		int index = s.indexOf(target, from);
+		if (index == -1) {
+			return -1;
+		}
+		if (hash.containsKey(index) == true) {
+			return findIndex(s, index + target.length(), target, hash);
+		} else {
+			return index;
+		}
 	}
 	public static void main(String[] args) {
 		Solution solution = new Solution();
 		
 		String s1 = "barfoothefoobarman";
 		String[] words1 = {"foo", "bar"};
-		System.out.println("expected: [0,9], output: " + solution.findSubstring(s1, words1));
+		System.out.println(s1 + ", expected: [0, 9], output: " + solution.findSubstring(s1, words1));
 		
 		String s2 = null;
 		String[] words2 = {"1"};
-		System.out.println("excepted: [], output: " + solution.findSubstring(s2, words2));
+		System.out.println(s2 + ", excepted: [], output: " + solution.findSubstring(s2, words2));
 		
 		String s3 = "";
 		String[] words3 = {"1"};
-		System.out.println("excepted: [], output: " + solution.findSubstring(s3, words3));
+		System.out.println(s3 + ", excepted: [], output: " + solution.findSubstring(s3, words3));
 		
 		String s4 = "abcdefg";
 		String[] words4 = null;
-		System.out.println("excepted: [], output: " + solution.findSubstring(s4, words4));
+		System.out.println(s4 + ", excepted: [], output: " + solution.findSubstring(s4, words4));
 		
 		String s5 = "abcdefg";
 		String[] words5 = {};
-		System.out.println("excepted: [], output: " + solution.findSubstring(s5, words5));
+		System.out.println(s5 + ", excepted: [], output: " + solution.findSubstring(s5, words5));
 		
 		String s6 = "abcd111de111abfgabcd111abcd";
 		String[] words6 = {"abcd", "111"};
-		System.out.println("excepted: [0, 16], output: " + solution.findSubstring(s6, words6));
+		System.out.println(s6 + ", excepted: [0, 16], output: " + solution.findSubstring(s6, words6));
 		
 		String s7 = "abcdefg";
 		String[] words7 = {"cd"};
-		System.out.println("excepted: [2], output: " + solution.findSubstring(s7, words7));
+		System.out.println(s7 + ", excepted: [2], output: " + solution.findSubstring(s7, words7));
 		
 		String s8 = "abc111defgabc";
 		String[] words8 = {"abc", "111"};
-		System.out.println("excepted: [0], output: " + solution.findSubstring(s8, words8));
+		System.out.println(s8 + ", excepted: [0], output: " + solution.findSubstring(s8, words8));
 		
 		String s9 = "lingmindraboofooowingdingbarrwingmonkeypoundcake";
 		String[] words9 = {"fooo","barr","wing","ding","wing"};
-		System.out.println("excepted: [13], output: " + solution.findSubstring(s9, words9));
+		System.out.println(s9 + ", excepted: [13], output: " + solution.findSubstring(s9, words9));
 	}
 }
