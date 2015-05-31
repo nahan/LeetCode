@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.TreeMap;
@@ -21,10 +22,17 @@ public class Solution {
 		if (s == null || s.length() == 0 || words == null || words.length == 0) {
 			return result;
 		}
+		
 		int totalLength = 0;
+		HashMap<Integer, Integer> stringHash = new HashMap<Integer, Integer>();
 		for (int i = 0; i < words.length; i ++) {
 			totalLength += words[i].length();
+			stringHash.put(i, -1);
 		}
+//		System.out.println(stringHash);
+		
+		// got a two pointers solution!!!!!!!!!!!!!!!!!!!!!!!
+		
 		TreeMap<Integer, String> lengthMap = new TreeMap<Integer, String>();
 		int from = 0;
 		while (from <= s.length() - totalLength) {
@@ -117,5 +125,6 @@ public class Solution {
 		String s9 = "lingmindraboofooowingdingbarrwingmonkeypoundcake";
 		String[] words9 = {"fooo","barr","wing","ding","wing"};
 		System.out.println(s9 + ", excepted: [13], output: " + solution.findSubstring(s9, words9));
+		
 	}
 }
