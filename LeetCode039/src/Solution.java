@@ -22,6 +22,9 @@ public class Solution {
 		List<List<Integer>> result = new ArrayList<List<Integer>>();
 		return result;
 	}
+	public void checkSum(int[] cadidates, int target, int index, List<List<Integer>> result, List<Integer> subResult) {
+		
+	}
 	public static void main(String[] args) {
 		Solution solution = new Solution();
 		
