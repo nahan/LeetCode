@@ -20,9 +20,22 @@ import java.util.List;
 public class Solution {
 	public List<List<Integer>> combinationSum(int[] candidates, int target) {
 		List<List<Integer>> result = new ArrayList<List<Integer>>();
+		for (int i = 0; i < candidates.length && candidates[i] <= target; i ++) {
+			int sum = candidates[i];
+			if (sum == target) {
+				List<Integer> subResult = new ArrayList<Integer>();
+				subResult.add(candidates[i]);
+				continue;
+			} else if (sum < target) {
+				List<Integer> subResult = new ArrayList<Integer>();
+				checkSum(candidates, target, i, sum, result, subResult);
+			} else if (sum > target) {
+				continue;
+			}
+		}
 		return result;
 	}
-	public void checkSum(int[] cadidates, int target, int index, List<List<Integer>> result, List<Integer> subResult) {
+	public void checkSum(int[] cadidates, int target, int index, int sum, List<List<Integer>> result, List<Integer> subResult) {
 		
 	}
 	public static void main(String[] args) {
