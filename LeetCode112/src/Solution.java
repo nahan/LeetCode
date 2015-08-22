@@ -51,5 +51,4 @@ public class Solution {
 		System.out.println("Has a root-to-leaf path: " + solution.hasPathSum(node1, 3));
 		System.out.println("Has a root-to-leaf path: " + solution.hasPathSum(node4, 2));
 	}
-
 }
