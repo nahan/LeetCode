@@ -51,14 +51,36 @@ public class Solution {
 	}
 	
 	public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
-		if (p == null || q == null) {
-			if (p == null && q == null) {
+		if (root == null || p == null || q == null) {
+			if (root == null) {
+				return null;
+			} else if (p == null && q == null) {
 				return root;
 			}
 			return p == null ? q : p;
 		}
-        return null;
+		
+		int bigger = p.val > q.val ? p.val : q.val;
+		int smaller = p.val < q.val ? p.val : q.val;
+		
+		if (root.val > bigger) {
+			return this.lowestCommonAncestor(root.left, p, q);
+		} else if (root.val < smaller) {
+			return this.lowestCommonAncestor(root.right, p, q);
+		} else if (root.val > smaller && root.val < bigger) {
+			return root;
+		} else {
+			return root;
+		}
     }
+	
+	public static void testResult(TreeNode node, String msg) {
+		if (node != null) {
+			System.out.println(node.val + ", " + msg);
+		} else {
+			System.out.println("NULL Node Returned" + ", " + msg);
+		}
+	}
 	
 	public static void main(String[] args) {
 		System.out.println("Hello, I am back!");
@@ -96,9 +118,18 @@ public class Solution {
 		System.out.println();
 		
 		System.out.println("+++++++++++++++++++++++++++ Entering Test +++++++++++++++++++++++++++");
-		System.out.println(solution.lowestCommonAncestor(node6, null, null).val);
-		System.out.println(solution.lowestCommonAncestor(node6, node0, null).val);
-		System.out.println(solution.lowestCommonAncestor(node6, null, node0).val);
+		testResult(solution.lowestCommonAncestor(node6, null, null), "should be 6.");
+		testResult(solution.lowestCommonAncestor(node6, node0, null), "should be 0.");
+		testResult(solution.lowestCommonAncestor(node6, null, node0), "should be 0.");
+		testResult(solution.lowestCommonAncestor(null, node0, node0), "should be NULL.");
+		testResult(solution.lowestCommonAncestor(null, node0, node0), "should be NULL.");
+		testResult(solution.lowestCommonAncestor(node6, node2, node8), "should be 6.");
+		testResult(solution.lowestCommonAncestor(node6, node4, node2), "should be 2.");
+		testResult(solution.lowestCommonAncestor(node6, node0, node9), "should be 6.");
+		testResult(solution.lowestCommonAncestor(node6, node7, node9), "should be 8.");
+		testResult(solution.lowestCommonAncestor(node6, node0, node5), "should be 2.");
+		testResult(solution.lowestCommonAncestor(node6, node3, node5), "should be 4.");
+		testResult(solution.lowestCommonAncestor(node6, node4, node7), "should be 6.");
 		System.out.println("--------------------------- Leaving Test ---------------------------");
 		
 	}
