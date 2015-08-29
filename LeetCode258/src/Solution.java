@@ -11,7 +11,7 @@
  *
  */
 public class Solution {
-	public int addDigits(int num) {
+	public int addDigits1(int num) {
 		if (num < 10) {
 			return num;
 		}
@@ -26,6 +26,9 @@ public class Solution {
 		return num >= 10 ? num % 10 : num;
 	}
 	
+	public int addDigits(int num) {
+		return (num - 1) % 9 + 1;
+	}
 	public static void main(String[] args) {
 		System.out.println("Hello World!");
 		
