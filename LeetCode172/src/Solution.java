@@ -9,28 +9,20 @@
  */
 public class Solution {
 	public int trailingZeroes(int n) {
-		float temp = (float) n;
-		float result = (float) n;
-		int sum = 0;
-		float min = 1;
-		while (temp > 1) {
-			if (result % 10 == 0) {
-				sum ++;
-				result /= 10;
-				temp /= 10;
-				min /= 10;
-				result = result * (temp - min);
-			} else {
-				result = result * (temp - min);
-			}
-			temp = temp - min;
+		if (n < 0) {
+			return 0;
 		}
-		System.out.print((int)result + ": ");
-        return sum;
+		int result = 0;
+		int i = 1;
+		while (Math.pow(5, i) <= n) {
+			result += n / Math.pow(5, i);
+			i ++;
+		}
+		return result;
     }
 	public static void main(String[] args) {
 		Solution solution = new Solution();
-		for (int i = 0; i < 17; i ++) {
+		for (int i = 0; i < 200; i ++) {
 			System.out.println(solution.trailingZeroes(i));
 		}
 	}
