@@ -22,23 +22,33 @@ public class Solution {
 			}
 			return result;
 		}
-		
 		int index = 1;
-		int pre = nums[index - 1];
-		int cur = nums[index];
+		int pre = nums[0];
+		int cur = nums[1];
 		StringBuilder builder = new StringBuilder();
 		builder.append(pre);
-		
 		while (index < nums.length) {
-			pre = nums[index - 1];
-			cur = nums[index];
+			System.out.println("pre: " + pre + ", cur: " + cur);
+			
+			if (pre + 1 == cur && index + 1 == nums.length) {
+				builder.append("->" + cur);
+			}
 			if (pre + 1 != cur) {
-				builder.append("->" + pre);
+				if (Character.getNumericValue(builder.charAt(builder.length() - 1)) != pre) {
+					builder.append("->" + pre);
+				}
 				result.add(builder.toString());
+				System.out.println("here: " + result);
 				builder = new StringBuilder();
 				builder.append(cur);
 			}
+			pre = nums[index];
 			index ++;
+			if (index == nums.length) {
+				break;
+			} else {
+				cur = nums[index];
+			}
 		}
 		result.add(builder.toString());
         return result;
@@ -47,6 +57,7 @@ public class Solution {
 		for (int i = 0; i < nums.length; i ++) {
 			System.out.print(nums[i] + ", ");
 		}
+		System.out.println();
 	}
 	public static void main(String[] args) {
 		System.out.println("Hello World!");
@@ -74,5 +85,9 @@ public class Solution {
 		int[] test04 = {1, 3};
 		solution.printArray(test04);
 		System.out.println(solution.summaryRanges(test04));
+		
+		int[] test05 = {0,1,2,4,5,7,9,10,12,14,15,16,27,28};
+		solution.printArray(test05);
+		System.out.println(solution.summaryRanges(test05));
 	}
 }
