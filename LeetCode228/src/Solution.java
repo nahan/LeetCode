@@ -16,38 +16,49 @@ import java.util.List;
 public class Solution {
 	public List<String> summaryRanges(int[] nums) {
 		List<String> result = new ArrayList<String>();
-		if (nums == null || nums.length < 2) {
+		if (nums == null || nums.length < 3) {
 			if (nums != null && nums.length == 1) {
 				result.add(String.valueOf(nums[0]));
+			}
+			if (nums != null && nums.length == 2) {
+				if (nums[0] + 1 == nums[1]) {
+					result.add(nums[0] + "->" + nums[1]);
+				} else {
+					result.add(String.valueOf(nums[0]));
+					result.add(String.valueOf(nums[1]));
+				}
 			}
 			return result;
 		}
 		int index = 1;
-		int pre = nums[0];
-		int cur = nums[1];
+		int pre = nums[index - 1];
+		int cur = nums[index];
+		int pos = nums[index + 1];
 		StringBuilder builder = new StringBuilder();
 		builder.append(pre);
-		while (index < nums.length) {
-			System.out.println("pre: " + pre + ", cur: " + cur);
-			
-			if (pre + 1 == cur && index + 1 == nums.length) {
+		while (index + 1 < nums.length) {
+			if (pre + 1 == cur && cur + 1 != pos) {
 				builder.append("->" + cur);
-			}
-			if (pre + 1 != cur) {
-				if (Character.getNumericValue(builder.charAt(builder.length() - 1)) != pre) {
-					builder.append("->" + pre);
-				}
+			} else if (pre + 1 != cur) {
 				result.add(builder.toString());
-				System.out.println("here: " + result);
-				builder = new StringBuilder();
+				builder.delete(0, builder.length());
 				builder.append(cur);
 			}
-			pre = nums[index];
-			index ++;
-			if (index == nums.length) {
+			if (index + 1 == nums.length - 1) {
+				if (cur + 1 == pos) {
+					builder.append("->" + pos);
+				} else {
+					result.add(builder.toString());
+					builder.delete(0, builder.length());
+					builder.append(pos);
+				}
+			}
+			pre = nums[index ++];
+			if (index + 1 == nums.length) {
 				break;
 			} else {
 				cur = nums[index];
+				pos = nums[index + 1];
 			}
 		}
 		result.add(builder.toString());
@@ -62,6 +73,7 @@ public class Solution {
 	public static void main(String[] args) {
 		System.out.println("Hello World!");
 		Solution solution = new Solution();
+		
 		System.out.println(solution.summaryRanges(null));
 		System.out.println(solution.summaryRanges(new int[0]));
 		System.out.println(solution.summaryRanges(new int[1]));
@@ -89,5 +101,17 @@ public class Solution {
 		int[] test05 = {0,1,2,4,5,7,9,10,12,14,15,16,27,28};
 		solution.printArray(test05);
 		System.out.println(solution.summaryRanges(test05));
+		
+		int[] test06 = {4,5,7,9};
+		solution.printArray(test06);
+		System.out.println(solution.summaryRanges(test06));
+		
+		int[] test07 = {9,10,12,14};
+		solution.printArray(test07);
+		System.out.println(solution.summaryRanges(test07));
+		
+		int[] test08 = {9,10,12,14,15,16,27,28};
+		solution.printArray(test08);
+		System.out.println(solution.summaryRanges(test08));
 	}
 }
