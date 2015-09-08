@@ -1,3 +1,5 @@
+import java.util.HashMap;
+
 
 /**
  * Given an array of integers and an integer k, 
@@ -8,6 +10,21 @@
  */
 public class Solution {
     public boolean containsNearbyDuplicate(int[] nums, int k) {
+        if (nums == null || nums.length < 2) {
+            return false;
+        }
+        HashMap<Integer, Integer> hash = new HashMap<Integer, Integer>();
+        for (int index = 0; index < nums.length; index++) {
+            if (hash.containsKey(nums[index])) {
+                if (index - hash.get(nums[index]) <= k) {
+                    return true;
+                } else {
+                    hash.replace(nums[index], index);
+                }
+            } else {
+                hash.put(nums[index], index);
+            }
+        }
         return false;
     }
     public static void main(String[] args) {
@@ -28,7 +45,11 @@ public class Solution {
         System.out.println("false: " + solution.containsNearbyDuplicate(a2, 1));
         System.out.println("false: " + solution.containsNearbyDuplicate(a3, 1));
         System.out.println("true: " + solution.containsNearbyDuplicate(a4, 1));
-        System.out.println("true: " + solution.containsNearbyDuplicate(a5, 1));
+        System.out.println("false: " + solution.containsNearbyDuplicate(a4, 0));
+        System.out.println("true: " + solution.containsNearbyDuplicate(a4, 2));
+        System.out.println("false: " + solution.containsNearbyDuplicate(a5, 1));
+        System.out.println("true: " + solution.containsNearbyDuplicate(a5, 2));
+        System.out.println("false: " + solution.containsNearbyDuplicate(a5, 0));
         System.out.println("true: " + solution.containsNearbyDuplicate(a6, 1));
         System.out.println("true: " + solution.containsNearbyDuplicate(a7, 1));
         System.out.println("true: " + solution.containsNearbyDuplicate(a8, 1));
