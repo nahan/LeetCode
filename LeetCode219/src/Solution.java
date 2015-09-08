@@ -1,4 +1,5 @@
-import java.util.HashMap;
+
+import java.util.HashSet;
 
 
 /**
@@ -13,12 +14,12 @@ public class Solution {
         if (nums == null || nums.length == 0) {
             return false;
         }
-        HashMap<Integer, Integer> hash = new HashMap<Integer, Integer>();
+        HashSet<Integer> hash = new HashSet<Integer>();
         for (int index = 0; index < nums.length; index++) {
-            if (hash.containsKey(nums[index]) == true) {
+            if (hash.contains(nums[index]) == true) {
                 return true;
             } else {
-                hash.put(nums[index], 1);
+                hash.add(nums[index]);
             }
         }
         return false;
