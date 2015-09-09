@@ -1,4 +1,3 @@
-import java.util.HashMap;
 
 /**
  * Given a column title as appear in an Excel sheet, 
@@ -21,23 +20,13 @@ public class Solution {
         if (s == null || s.length() == 0) {
             return 0;
         }
-        HashMap<Character, Integer> hash = new HashMap<Character, Integer>();
-        for (int index = 0; index < s.length(); index++) {
-            hash.put(s.charAt(index), s.charAt(index) - 64);
-        }
         int count = 1;
         int result = 0;
         for (int index = s.length() - 1; index >= 0; index--) {
-            result += hash.get(s.charAt(index)) * count;
+            result += (s.charAt(index) - 64) * count;
             count *= 26;
         }
         return result;
-    }
-    public void print(char[] a) {
-        for (int i = 0; i < a.length; i++) {
-            System.out.print(a[i] + ", ");
-        }
-        System.out.println();
     }
     public static void main(String[] args) {
         Solution solution = new Solution();
