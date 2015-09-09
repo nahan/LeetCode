@@ -1,6 +1,5 @@
 import java.util.HashMap;
 
-
 /**
  * Given two strings s and t, determine if they are isomorphic.
  * Two strings are isomorphic if the characters in s can be replaced to get t.
@@ -17,44 +16,37 @@ import java.util.HashMap;
  */
 public class Solution {
     public boolean isIsomorphic(String s, String t) {
-        if (s == null || t == null) {
+        if (s == null || t == null || s.length() <= 1 || s.length() <= 1) {
             return true;
         }
-        HashMap<Character, Integer> hash1 = new HashMap<Character, Integer>();
-        HashMap<Character, Integer> hash2 = new HashMap<Character, Integer>();
-        for (int i = 0; i < s.length(); i++) {
-            if (hash1.containsKey(s.charAt(i))) {
-                hash1.put(s.charAt(i), hash1.get(s.charAt(i)) + 1);
+        HashMap<Character, Character> hash = new HashMap<Character, Character>();
+        
+        int length = s.length();
+        for (int i = 0; i < length; i++) {
+            if (hash.containsKey(s.charAt(i)) == true) {
+                if (hash.get(s.charAt(i)) != t.charAt(i)) {
+                    return false;
+                }
             } else {
-                hash1.put(s.charAt(i), 1);
+                if (hash.containsValue(t.charAt(i)) == true) {
+                    return false;
+                } else {
+                    hash.put(s.charAt(i), t.charAt(i));
+                }
             }
         }
-        for (int i = 0; i < t.length(); i++) {
-            if (hash2.containsKey(t.charAt(i))) {
-                hash2.put(t.charAt(i), hash2.get(t.charAt(i)) + 1);
-            } else {
-                hash2.put(t.charAt(i), 1);
-            }
-        }
-        String s1 = hash1.values().toString();
-        String s2 = hash2.values().toString();
-        
-        System.out.println(hash1);
-        System.out.println(hash2);
-        
-        System.out.println(s1);
-        System.out.println(s2);
-        if (s1.equals(s2)) {
-            return true;
-        } else {
-            return false;
-        }
+        return true;
     }
     public static void main(String[] args) {
         Solution solution = new Solution();
+        System.out.println("true: " + solution.isIsomorphic(null, null));
+        System.out.println("true: " + solution.isIsomorphic("", ""));
+        System.out.println("true: " + solution.isIsomorphic("e", "a"));
+        System.out.println("true: " + solution.isIsomorphic("gg", "dd"));
         System.out.println("true: " + solution.isIsomorphic("egg", "add"));
         System.out.println("false: " + solution.isIsomorphic("foo", "bar"));
         System.out.println("true: " + solution.isIsomorphic("paper", "title"));
         System.out.println("false: " + solution.isIsomorphic("aba", "baa"));
+        System.out.println("false: " + solution.isIsomorphic("ab", "aa"));
     }
 }
