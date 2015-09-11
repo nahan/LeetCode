@@ -16,6 +16,20 @@
  */
 public class Solution {
     public String convertToTitle(int n) {
+        String result = "";
+        while (n > 0) {
+            if (n % 26 == 0) {
+                result = "Z" + result;
+                n = n / 26 - 1;
+            } else {
+                int x = n % 26 + 64;
+                result = (char)x + result;
+                n = n / 26;
+            }
+        }
+        return result;
+    }
+    public String convertToTitleTimeForSpace(int n) {
         StringBuilder builder = new StringBuilder();
         while (n > 0) {
             if (n % 26 == 0) {
