@@ -20,9 +20,9 @@ public class Solution {
         for (int i = 0; i < nums.length; i++) {
             if (nums[i] == 0) {
                 num++;
-                continue;
+            } else {
+                nums[i - num] = nums[i];
             }
-            nums[i - num] = nums[i];
         }
         for (int i = 1; i <= num; i++) {
             nums[nums.length - i] = 0;
