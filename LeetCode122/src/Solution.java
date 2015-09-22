@@ -15,21 +15,12 @@ public class Solution {
             return 0;
         }
         int result = 0;
-        int[] profits = new int[prices.length];
-        for (int i = 0; i < prices.length;) {
-            int max = 0;
-            int j = i;
-            int s = 0;
-            while (j < prices.length) {
-                profits[j] = prices[j] - prices[i];
-                if (max <= profits[j]) {
-                    max = profits[j];
-                    s = j;
-                }
-                j++;
+        for (int i = 1; i < prices.length; i++) {
+            int buy = i - 1;
+            int sell = i;
+            if (prices[sell] - prices[buy] > 0) {
+                result += prices[sell] - prices[buy];
             }
-            i = s + 1;
-            result += max;
         }
         return result;
     }
