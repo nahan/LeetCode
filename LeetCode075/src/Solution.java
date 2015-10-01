@@ -16,60 +16,27 @@ public class Solution {
         if (nums == null || nums.length < 2) {
             return;
         }
-        this.doSort(nums, 0, nums.length - 1);
+        int i = this.toRight(nums, 2, nums.length);
+        this.toRight(nums, 1, i);
     }
-    public void doSort(int[] nums, int start, int end) {
-        for (int i = start; i <= end; i++) {
-            System.out.print(nums[i] + ", ");
-        }
-        System.out.println();
-        int mid = start + (end - start) / 2;
-        int first = start;
-        int second = end;
-        
-        if (start != end) {
-            this.doSort(nums, start, mid);
-            this.doSort(nums, mid + 1, end);
-        }
-        
-        while (first != mid && second != mid) {
-            if (nums[first] <= nums[mid] && nums[mid] <= nums[second]) {
-                first++;
-                second--;
-                continue;
-            }
-            if (nums[first] <= nums[mid] && nums[mid] >= nums[second]) {
-                if (nums[first] < nums[second]) {
-                    this.swap(nums, mid, second);
-                    second--;
-                } else {
-                    this.swap(nums, first, second);
-                    this.swap(nums, mid, second);
-                    first++;
-                    second--;
+    public int toRight(int[] nums, int target, int end) {
+        int head = 0;
+        int tail = end - 1;
+        while (head <= tail) {
+            if (nums[head] == target && nums[tail] != target) {
+                this.swap(nums, head, tail);
+                head++;
+                tail--;
+            } else {
+                if (nums[head] != target) {
+                    head++;
                 }
-                continue;
-            }
-            if (nums[first] >= nums[mid] && nums[mid] <= nums[second]) {
-                if (nums[first] < nums[second]) {
-                    this.swap(nums, mid, first);
-                    first++;
-                } else {
-                    this.swap(nums, first, second);
-                    this.swap(nums, mid, first);
-                    first++;
-                    second--;
+                if (nums[tail] == target) {
+                    tail--;
                 }
-                continue;
-            }
-            if (nums[first] >= nums[mid] && nums[mid] >= nums[second]) {
-                this.swap(nums, first, second);
-                first++;
-                second--;
-                continue;
             }
         }
-        
+        return head;
     }
     public void swap(int[] nums, int a, int b) {
         int temp = nums[b];
@@ -93,6 +60,7 @@ public class Solution {
         int[] n01 = {};
         int[] n02 = {1};
         int[] n03 = {0, 1, 2, 0, 2, 1, 0, 2};
+        int[] n04 = {1, 0, 2};
         
         solution.print("before: ", n00);
         solution.sortColors(n00);
@@ -109,5 +77,9 @@ public class Solution {
         solution.print("before: ", n03);
         solution.sortColors(n03);
         solution.print("after: ", n03);
+        
+        solution.print("before: ", n04);
+        solution.sortColors(n04);
+        solution.print("after: ", n04);
     }
 }
