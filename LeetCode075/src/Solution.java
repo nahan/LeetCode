@@ -16,6 +16,30 @@ public class Solution {
         if (nums == null || nums.length < 2) {
             return;
         }
+        int i0 = 0, i1 = 0, i2 = 0;
+        for (int i = 0; i < nums.length; i++) {
+           if (nums[i] == 0) {
+               nums[i2] = 2;
+               nums[i1] = 1;
+               nums[i0] = 0;
+               i2++;
+               i1++;
+               i0++;
+           } else if (nums[i] == 1) {
+               nums[i2] = 2;
+               nums[i1] = 1;
+               i2++;
+               i1++;
+           } else {
+               nums[i2] = 2;
+               i2++;
+           }
+        }
+    }
+    public void sortColors0(int[] nums) {
+        if (nums == null || nums.length < 2) {
+            return;
+        }
         int i = this.toRight(nums, 2, nums.length);
         this.toRight(nums, 1, i);
     }
