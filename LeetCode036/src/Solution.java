@@ -8,7 +8,52 @@ import java.util.HashMap;
  * The Sudoku board could be partially filled, where empty cells are filled with the character '.'.
  */
 public class Solution {
-	public boolean isValidSudoku(char[][] board) {
+    public boolean isValidSudoku(char[][] board) {
+        if (board == null) {
+            return false;
+        }
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[0].length; j++) {
+                if (!isValid(board, i, j, board[i][j])) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+    public boolean isValid(char[][] board, int i, int j, char value) {
+        for (int index = 0; index < board[0].length; index++) {
+            if (index != j) {
+                if (board[i][index] != '.' && board[i][index] == value) {
+                    return false;
+                }
+            }
+        }
+        for (int index = 0; index < board.length; index++) {
+            if (index != i) {
+                if (board[index][j] != '.' && board[index][j] == value) {
+                    return false;
+                }
+            }
+        }
+        int size = (int) Math.sqrt(board.length);
+        int iStart = i / size;
+        int jStart = j / size;
+        for (int row = 0; row < size; row++) {
+            for (int col = 0; col < size; col++) {
+                int curI = iStart * size + row;
+                int curJ = jStart * size + col;
+                if (curI != i && curJ != j) {
+                    char cur = board[curI][curJ];
+                    if (cur != '.' && cur == value) {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
+    }
+	public boolean isValidSudoku0(char[][] board) {
 		if (board == null) {
 			return false;
 		}
@@ -196,5 +241,11 @@ public class Solution {
 		System.out.println(solution.isValidSudoku(board3));
 		System.out.println(solution.isValidSudoku(board4));
 		System.out.println(solution.isValidSudoku(board5));
+		System.out.println();
+		System.out.println(solution.isValidSudoku0(board1));
+        System.out.println(solution.isValidSudoku0(board2));
+        System.out.println(solution.isValidSudoku0(board3));
+        System.out.println(solution.isValidSudoku0(board4));
+        System.out.println(solution.isValidSudoku0(board5));
 	}
 }
