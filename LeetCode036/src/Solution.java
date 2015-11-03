@@ -1,5 +1,3 @@
-import java.util.HashMap;
-
 /**
  * Determine if a Sudoku is valid, according to: Sudoku Puzzles - The Rules.
  * Each row must have the numbers 1-9 occuring just once.
@@ -53,87 +51,6 @@ public class Solution {
         }
         return true;
     }
-	public boolean isValidSudoku0(char[][] board) {
-		if (board == null) {
-			return false;
-		}
-		for (int index = 0; index < board.length; index ++) {
-			if (isValidRow(board[index]) == false) {
-				return false;
-			}
-		}
-		if (isValidColumn(board) == false) {
-			return false;
-		}
-		for (int row = 0; row < board.length; ) {
-			for (int column = 0; column < board.length; ) {
-				if (isValidBox(board, row, column) == false) {
-					return false;
-				}
-				column += 3;
-			}
-			row += 3;
-		}
-		return true;
-	}
-	public boolean isValidRow(char[] row) {
-		if (row == null) {
-			return false;
-		}
-		HashMap<Character, Boolean> digit = new HashMap<Character, Boolean>();
-		for (int index = 0; index < row.length; index ++) {
-			if (row[index] == '.') {
-				continue;
-			} else if ((int)row[index] < 49 || (int)row[index] > 57) {
-				return false;
-			} else {
-				if (digit.get(row[index]) != null && digit.get(row[index]).booleanValue() == true) {
-					return false;
-				} else {
-					digit.put(row[index], true);
-				}
-			}
-		}
-		return true;
-	}
-	public boolean isValidColumn(char[][] board) {
-		for (int column = 0; column < board.length; column ++) {
-			HashMap<Character, Boolean> digit = new HashMap<Character, Boolean>();
-			for (int row = 0; row < board.length; row ++) {
-				if (board[row][column] == '.') {
-					continue;
-				} else if ((int)board[row][column] < 49 || (int)board[row][column] > 57) {
-					return false;
-				} else {
-					if (digit.get(board[row][column]) != null && digit.get(board[row][column]).booleanValue() == true) {
-						return false;
-					} else {
-						digit.put(board[row][column], true);
-					}
-				}
-			}
-		}
-		return true;
-	}
-	public boolean isValidBox(char[][] box, int startRow, int startColumn) {
-		HashMap<Character, Boolean> digit = new HashMap<Character, Boolean>();
-		for (int column = startColumn; column < startColumn + 3; column ++) {
-			for (int row = startRow; row < startRow + 3; row ++) {
-				if (box[row][column] == '.') {
-					continue;
-				} else if ((int)box[row][column] < 49 || (int)box[row][column] > 57) {
-					return false;
-				} else {
-					if (digit.get(box[row][column]) != null && digit.get(box[row][column]).booleanValue() == true) {
-						return false;
-					} else {
-						digit.put(box[row][column], true);
-					}
-				}
-			}
-		}
-		return true;
-	}
 	public static void main(String[] args) {
 		Solution solution = new Solution();
 		char[][] board1 = new char[9][9];
@@ -242,10 +159,5 @@ public class Solution {
 		System.out.println(solution.isValidSudoku(board4));
 		System.out.println(solution.isValidSudoku(board5));
 		System.out.println();
-		System.out.println(solution.isValidSudoku0(board1));
-        System.out.println(solution.isValidSudoku0(board2));
-        System.out.println(solution.isValidSudoku0(board3));
-        System.out.println(solution.isValidSudoku0(board4));
-        System.out.println(solution.isValidSudoku0(board5));
 	}
 }
