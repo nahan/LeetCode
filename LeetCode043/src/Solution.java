@@ -15,13 +15,9 @@ public class Solution {
             int index = i;
             for (int j = 0; j < n2.length(); j++) {
                 result[index] += this.charToInt(n1.charAt(i)) * this.charToInt(n2.charAt(j));
+                result[index + 1] += result[index] / 10;
+                result[index] = result[index] % 10;
                 index++;
-            }
-        }
-        for (int i = 0; i < result.length; i++) {
-            if (result[i] > 9) {
-                result[i + 1] += result[i] / 10;
-                result[i] = result[i] % 10;
             }
         }
         return this.intArrayToString(result);
@@ -43,7 +39,7 @@ public class Solution {
             if (builder.charAt(i) == '0') {
                 start++;
             } else {
-                break;
+                break; 
             }
         }
         return builder.substring(start);
