@@ -9,7 +9,7 @@ public class Solution {
 	 * return 5.
 	 */
 	public int lengthOfLastWord(String s) {
-		String[] wordArray = s.split(" ");
+		String[] wordArray = s.split(" +");
 		if (wordArray.length <= 0) {
 			return 0;
 		} else {
