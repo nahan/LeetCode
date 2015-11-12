@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 
@@ -9,7 +11,7 @@ import java.util.List;
  * 
  * Note:
  * All numbers (including target) will be positive integers.
- * Elements in a combination (a1, a2, ¡­ , ak) must be in non-descending order. (ie, a1 ¡Ü a2 ¡Ü ¡­ ¡Ü ak).
+ * Elements in a combination (a1, a2, ... , ak) must be in non-descending order. (ie, a1 <= a2 <= ... <= ak).
  * The solution set must not contain duplicate combinations.
  * 
  * For example, given candidate set 2,3,6,7 and target 7, 
@@ -19,24 +21,46 @@ import java.util.List;
  */
 public class Solution {
 	public List<List<Integer>> combinationSum(int[] candidates, int target) {
-		List<List<Integer>> result = new ArrayList<List<Integer>>();
-		for (int i = 0; i < candidates.length && candidates[i] <= target; i ++) {
-			int sum = candidates[i];
-			if (sum == target) {
-				List<Integer> subResult = new ArrayList<Integer>();
-				subResult.add(candidates[i]);
-				continue;
-			} else if (sum < target) {
-				List<Integer> subResult = new ArrayList<Integer>();
-				checkSum(candidates, target, i, sum, result, subResult);
-			} else if (sum > target) {
-				continue;
-			}
+		if (candidates == null || candidates.length == 0) {
+		    return new ArrayList<List<Integer>>();
 		}
-		return result;
+		Arrays.sort(candidates);
+		return this.doCombine(candidates, target, 0);
 	}
-	public void checkSum(int[] cadidates, int target, int index, int sum, List<List<Integer>> result, List<Integer> subResult) {
-		
+	public List<List<Integer>> doCombine(int[] candidates, int target, int start) {
+	    if (start >= candidates.length || candidates[start] > target) {
+	        return new ArrayList<List<Integer>>();
+	    } else if (candidates[start] == target) {
+	        List<Integer> subResult = new ArrayList<Integer>();
+	        subResult.add(candidates[start]);
+	        List<List<Integer>> result = new ArrayList<List<Integer>>();
+	        result.add(subResult);
+	        return result;
+	    } else {
+	        List<List<Integer>> result1 = this.doCombine(candidates, target - candidates[start], start);
+	        List<List<Integer>> result2 = this.doCombine(candidates, target, start + 1);
+	        if (result1.size() != 0) {
+	            this.addHead(result1, candidates[start]);
+	        }
+	        return this.merge(result1, result2);
+	    }
+	}
+	public void addHead(List<List<Integer>> list, int item) {
+	    Iterator<List<Integer>> it = list.iterator();
+	    while (it.hasNext()) {
+	        List<Integer> cur = it.next();
+	        cur.add(0, item);
+	    }
+	}
+	public List<List<Integer>> merge(List<List<Integer>> list1, List<List<Integer>> list2) {
+	    if (list1.size() == 0 || list2.size() == 0) {
+	        if (list1.size() == 0 && list2.size() == 0) {
+	            return new ArrayList<List<Integer>>();
+	        }
+	        return list1.size() == 0? list2: list1;
+	    }
+	    list1.addAll(list2);
+	    return list1;
 	}
 	public static void main(String[] args) {
 		Solution solution = new Solution();
