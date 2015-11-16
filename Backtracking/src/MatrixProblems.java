@@ -11,6 +11,7 @@ public class MatrixProblems {
     /**************************** N-Queens 1 ****************************/
     /**
      * N-Queens.
+     * use char[][] to present board.
      * @param args
      */
     public List<List<String>> solveNQueens(int n) {
@@ -82,12 +83,35 @@ public class MatrixProblems {
     /**************************** N-Queens 2 ****************************/
     /**
      * N-Queens.
-     * another
+     * use int[] to present board.
      * @param args
      */
     public List<int[]> nQueensSolver(int n) {
         List<int[]> result = new ArrayList<int[]>();
+        int[] board = new int[n];
+        Arrays.fill(board, -1);
+        this.placeQueens(0, board, result);
         return result;
+    }
+    public void placeQueens(int i, int[] board, List<int[]> result) {
+        if (i == board.length) {
+            result.add(board.clone());
+            return;
+        }
+        for (int pos = 0; pos < board.length; pos++) {
+            if (available(i, pos, board)) {
+                board[i] = pos;
+                this.placeQueens(i + 1, board, result);
+            }
+        }
+    }
+    public boolean available(int i, int pos, int[] board) {
+        for (int index = 0; index < i; index++) {
+            if (board[index] == pos || (Math.abs(index - i) == Math.abs(board[index] - pos))) {
+                return false;
+            }
+        }
+        return true;
     }
     /**************************** N-Queens II ****************************/
     /**
@@ -95,7 +119,29 @@ public class MatrixProblems {
      * @param args
      */
     public int totalNQueens(int n) {
-        return 0;
+        int[] board = new int[n];
+        Arrays.fill(board, -1);
+        return this.countNQueens(0, 0, board);
+    }
+    public int countNQueens(int i, int count, int[] board) {
+        if (i == board.length) {
+            count++;
+        }
+        for (int pos = 0; pos < board.length; pos++) {
+            if (this.isAvailable(i, pos, board)) {
+                board[i] = pos;
+                count = this.countNQueens(i + 1, count, board);
+            }
+        }
+        return count;
+    }
+    public boolean isAvailable(int i, int pos, int[] board) {
+        for (int index = 0; index < i; index++) {
+            if (board[index] == pos || (Math.abs(index - i) == Math.abs(board[index] - pos))) {
+                return false;
+            }
+        }
+        return true;
     }
     /**************************** Sudoku Solver ****************************/
     /**
@@ -110,6 +156,8 @@ public class MatrixProblems {
         System.out.println("Hello Backtracking.");
         MatrixProblems problem = new MatrixProblems();
         problem.testSolverNQueens();
+        problem.testNQueensSolver();
+        problem.testTotalNQueens();
     }
     /**************************** Testing Methods ****************************/
     public void testSolverNQueens() {
@@ -118,9 +166,13 @@ public class MatrixProblems {
         this.printMatrix(this.solveNQueens(8));
     }
     public void testNQueensSolver() {
-        System.out.println(this.nQueensSolver(8));
+        this.print(this.nQueensSolver(1));
+        this.print(this.nQueensSolver(4));
+        this.print(this.nQueensSolver(8));
     }
     public void testTotalNQueens() {
+        System.out.println(this.totalNQueens(1));
+        System.out.println(this.totalNQueens(4));
         System.out.println(this.totalNQueens(8));
     }
     public void testSolveSudoku() {
@@ -147,6 +199,9 @@ public class MatrixProblems {
         this.printMatrix(board);
     }
     /**************************** Printing Methods ****************************/
+    public void print(int n) {
+        System.out.println(n);
+    }
     public void print(int[] array) {
         if (array == null) {
             return;
@@ -164,6 +219,14 @@ public class MatrixProblems {
             System.out.print(item + "\t");
         }
         System.out.println();
+    }
+    public void print(List<int[]> list) {
+        for (int[] item: list) {
+            for (int i = 0; i < item.length; i++) {
+                System.out.print(item[i] + ", ");
+            }
+            System.out.println();
+        }
     }
     public void printList(List<String> list) {
         System.out.println(list);
