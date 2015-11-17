@@ -149,7 +149,66 @@ public class MatrixProblems {
      * @param args
      */
     public void solveSudoku(char[][] board) {
-        
+        boolean[][] available = new boolean[board.length][board[0].length];
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[0].length; j++) {
+                if (board[i][j] == '.') {
+                    available[i][j] = true;
+                } else {
+                    available[i][j] = false;
+                }
+            }
+        }
+        this.solvingSudoku(0, 0, board, available);
+    }
+    public boolean solvingSudoku(int i, int j, char[][] board, boolean[][] available) {
+        if (j == board[0].length) {
+            j = 0;
+            i++;
+            if (i == board.length) {
+                return true;
+            }
+        }
+        if (!available[i][j]) {
+            return this.solvingSudoku(i, j + 1, board, available);
+        }
+        for (int value = 1; value <= board.length; value++) {
+            if (this.valid(i, j, value, board)) {
+                board[i][j] = this.intToChar(value);
+                if (this.solvingSudoku(i, j + 1, board, available)) {
+                    return true;
+                }
+                board[i][j] = '.';
+            }
+        }
+        return false;
+    }
+    public boolean valid(int i, int j, int value, char[][] board) {     
+        for (int m = 0; m < board.length; m++) {
+            if (m != i && board[m][j] == this.intToChar(value)) {
+                return false;
+            }
+        }
+        for (int n = 0; n < board[0].length; n++) {
+            if (n != j && board[i][n] == this.intToChar(value)) {
+                return false;
+            }
+        }
+        int xLength = (int) Math.sqrt(board.length);
+        int yLength = (int) Math.sqrt(board[0].length);
+        int xStart = (i / xLength) * xLength;
+        int yStart = (j / yLength) * yLength;
+        for (int x = xStart; x < xStart + xLength; x++) {
+            for (int y = yStart; y < yStart + yLength; y++) {
+                if (board[x][y] == this.intToChar(value)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+    public char intToChar(int i) {
+        return (char) (i + 48);
     }
     /**************************** Main ****************************/
     public static void main(String[] args) {
@@ -158,6 +217,7 @@ public class MatrixProblems {
         problem.testSolverNQueens();
         problem.testNQueensSolver();
         problem.testTotalNQueens();
+        problem.testSolveSudoku();
     }
     /**************************** Testing Methods ****************************/
     public void testSolverNQueens() {
@@ -171,9 +231,9 @@ public class MatrixProblems {
         this.print(this.nQueensSolver(8));
     }
     public void testTotalNQueens() {
-        System.out.println(this.totalNQueens(1));
-        System.out.println(this.totalNQueens(4));
-        System.out.println(this.totalNQueens(8));
+        this.print(this.totalNQueens(1));
+        this.print(this.totalNQueens(4));
+        this.print(this.totalNQueens(8));
     }
     public void testSolveSudoku() {
         char[][] board = new char[9][9];
@@ -195,7 +255,10 @@ public class MatrixProblems {
         board[6] = row6;
         board[7] = row7;
         board[8] = row8;
+        System.out.println("before:");
+        this.printMatrix(board);
         this.solveSudoku(board);
+        System.out.println("after:");
         this.printMatrix(board);
     }
     /**************************** Printing Methods ****************************/
