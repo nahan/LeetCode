@@ -19,7 +19,7 @@ public class SubsetProblems {
         return result;
     }
     public void backtrackSubsets(int i, int[] nums, List<Integer> item, List<List<Integer>> result) {
-        result.add(this.copyList(item));
+        result.add(new ArrayList<Integer>(item));
         for (int index = 0; index < nums.length; index++) {
             if (this.valid(i, item, nums[index])) {
                 item.add(i, nums[index]);
@@ -31,13 +31,6 @@ public class SubsetProblems {
     public boolean valid(int i, List<Integer> list, int value) {
         return i == 0? true: list.get(i - 1) < value? true: false;
     }
-    public List<Integer> copyList(List<Integer> list) {
-        List<Integer> copy = new ArrayList<Integer>();
-        for (Integer item: list) {
-            copy.add(item);
-        }
-        return copy;
-    }
     /**************************** Subsets II ****************************/
     /**
      * Given a collection of integers that might contain duplicates, nums, 
@@ -46,14 +39,31 @@ public class SubsetProblems {
      * @return
      */
     public List<List<Integer>> subsetsWithDup(int[] nums) {
-        return null;
+        List<List<Integer>> result = new ArrayList<List<Integer>>();
+        List<Integer> item = new ArrayList<Integer>();
+        Arrays.sort(nums);
+        this.backtrackSubsetsWithDup(0, 0, nums, item, result);
+        return result;
+    }
+    public void backtrackSubsetsWithDup(int i, int j, int[] nums, List<Integer> item, List<List<Integer>> result) {
+        if (!result.contains(item)) {
+            result.add(new ArrayList<Integer>(item));
+        }
+        for (int index = 0; index < nums.length; index++) {
+            if (i == 0 || index > j) {
+                item.add(i, nums[index]);
+                j = index;
+                this.backtrackSubsetsWithDup(i + 1, j, nums, item, result);
+                item.remove(i);
+            }
+        }
     }
     /**************************** Main ****************************/
     public static void main(String[] args) {
         System.out.println("Hello Backtracking.");
         SubsetProblems problem = new SubsetProblems();
         problem.testSubsets();
-//        problem.testSubsetsWithDup();
+        problem.testSubsetsWithDup();
     }
     /**************************** Testing Methods ****************************/
     public void testSubsets() {
