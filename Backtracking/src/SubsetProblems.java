@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -10,7 +12,31 @@ public class SubsetProblems {
      * @return
      */
     public List<List<Integer>> subsets(int[] nums) {
-        return null;
+        List<List<Integer>> result = new ArrayList<List<Integer>>();
+        List<Integer> item = new ArrayList<Integer>();
+        Arrays.sort(nums);
+        this.backtrackSubsets(0, nums, item, result);
+        return result;
+    }
+    public void backtrackSubsets(int i, int[] nums, List<Integer> item, List<List<Integer>> result) {
+        result.add(this.copyList(item));
+        for (int index = 0; index < nums.length; index++) {
+            if (this.valid(i, item, nums[index])) {
+                item.add(i, nums[index]);
+                this.backtrackSubsets(i + 1, nums, item, result);
+                item.remove(i);
+            }
+        }
+    }
+    public boolean valid(int i, List<Integer> list, int value) {
+        return i == 0? true: list.get(i - 1) < value? true: false;
+    }
+    public List<Integer> copyList(List<Integer> list) {
+        List<Integer> copy = new ArrayList<Integer>();
+        for (Integer item: list) {
+            copy.add(item);
+        }
+        return copy;
     }
     /**************************** Subsets II ****************************/
     /**
