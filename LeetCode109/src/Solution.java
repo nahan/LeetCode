@@ -17,40 +17,25 @@ class TreeNode {
 }
 public class Solution {
     public TreeNode sortedListToBST(ListNode head) {
-        int length = 0;
-        ListNode item = head;
-        while (item != null) {
-            length++;
-            item = item.next;
-        }
-        item = head;
-        int[] num = new int[length];
-        length = 0;
-        while (item != null) {
-            num[length] = item.val;
-            item = item.next;
-            length++;
-        }
-        return this.sortedArrayToBST(num);
-    }
-    public TreeNode sortedArrayToBST(int[] num) {
-        if (num == null || num.length == 0) {
+        if (head == null) {
             return null;
         }
-        int mid = num.length / 2;
-        TreeNode root = new TreeNode(num[mid]);
-        root.left = sortedArrayToBST(num, 0, mid - 1);
-        root.right = sortedArrayToBST(num, mid + 1, num.length - 1);
+        ListNode previous = null;
+        ListNode middle = head;
+        ListNode tail = head;
+        while (tail != null && tail.next != null) {
+            previous = middle;
+            middle = middle.next;
+            tail = tail.next.next;
+        }
+        TreeNode root = new TreeNode(middle.val);
+        if (previous != null) {
+            previous.next = null;
+        } else {
+            head = null;
+        }
+        root.left = this.sortedListToBST(head);
+        root.right = this.sortedListToBST(middle.next);
         return root;
-    }
-    public TreeNode sortedArrayToBST(int[] num, int startAt, int endAt) {
-        if (num == null || num.length == 0 || endAt < startAt) {
-            return null;
-        }
-        int mid = startAt + (endAt - startAt + 1) / 2;
-        TreeNode node = new TreeNode(num[mid]);
-        node.left = sortedArrayToBST(num, startAt, mid - 1);
-        node.right = sortedArrayToBST(num, mid + 1, endAt);
-        return node;
     }
 }
