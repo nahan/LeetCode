@@ -71,8 +71,41 @@ public class RealProblems {
         }
         return maxProfit;
     }
-    /**************************** House Robber ****************************/
-    /**************************** House Robber II ****************************/
+    /**************************** 198. House Robber ****************************/
+    public int rob(int[] nums) {
+        if (nums == null || nums.length < 2) {
+            return nums.length == 1? nums[0]: 0;
+        }
+        int[] stolen = new int[nums.length];
+        stolen[0] = nums[0];
+        stolen[1] = nums[0] > nums[1]? nums[0]: nums[1];
+        for (int i = 2; i < nums.length; i++) {
+            stolen[i] = Math.max(stolen[i - 1], stolen[i - 2] + nums[i]);
+        }
+        return stolen[stolen.length - 1];
+    }
+    /**************************** 213. House Robber II ****************************/
+    public int robII(int[] nums) {
+        if (nums == null || nums.length <= 2) {
+            if (nums == null || nums.length == 0) {
+                return 0;
+            } else {
+                return nums.length == 1? nums[0]: Math.max(nums[0], nums[1]);
+            }
+        }
+        int max1 = this.robCircle(nums, 0, nums.length - 2);
+        int max2 = this.robCircle(nums, 1, nums.length - 1);
+        return Math.max(max1, max2);
+    }
+    public int robCircle(int[] nums, int startAt, int endAt) {
+        int[] stolen = new int[endAt - startAt + 1];
+        stolen[0] = nums[startAt];
+        stolen[1] = nums[startAt] > nums[startAt + 1]? nums[startAt]: nums[startAt + 1];
+        for (int i = 2; i < stolen.length; i++) {
+            stolen[i] = Math.max(stolen[i - 1], stolen[i - 2] + nums[i + startAt]);
+        }
+        return stolen[stolen.length - 1];
+    }
     /**************************** 312. Burst Balloons ****************************/
     /**
      * Given n balloons, indexed from 0 to n-1. 
@@ -160,7 +193,9 @@ public class RealProblems {
 //        problems.testMaxProfitCool();
 //        problems.testClimbStairs();
 //        problems.testMaxProfit();
-        problems.testMaxCoins();
+//        problems.testRob();
+        problems.testRobII();
+//        problems.testMaxCoins();
 //        problems.testMaxProfitIII();
     }
     /**************************** Testing Methods ****************************/
@@ -199,6 +234,54 @@ public class RealProblems {
         this.print(this.maxProfit(prices03));
         int[] prices04 = {1, 2, 3, 0};
         this.print(this.maxProfit(prices04));
+    }
+    public void testRob() {
+        String output = "expected: %d\tresult: %d\n";
+        int[] prices00 = {1, 2, 3, 0, 2};
+        System.out.format(output, 6, this.rob(prices00));
+        int[] prices01 = {};
+        System.out.format(output, 0, this.rob(prices01));
+        int[] prices02 = {1};
+        System.out.format(output, 1, this.rob(prices02));
+        int[] prices03 = {1, 2, 3};
+        System.out.format(output, 4, this.rob(prices03));
+        int[] prices04 = {1, 2, 3, 0};
+        System.out.format(output, 4, this.rob(prices04));
+        int[] prices05 = {1, 2, 3, 0, 2, 2, 3, 0, 2};
+        System.out.format(output, 11, this.rob(prices05));
+        int[] prices06 = {1, 2, 3, 0, 2, 2, 3, 0, 2, 2, 3, 0, 2};
+        System.out.format(output, 16, this.rob(prices06));
+        int[] prices07 = {1, 2, 3, 0, 2, 2, 3, 0, 2, 2, 3, 0, 2, 2, 3, 0, 2, 2, 3, 0, 2, 2, 3, 0, 2};
+        System.out.format(output, 31, this.rob(prices07));
+    }
+    public void testRobII() {
+        String output = "expected: %d\tresult: %d\n";
+        int[] prices00 = {1, 2, 3, 0, 2};
+        System.out.format(output, 5, this.robII(prices00));
+        int[] prices01 = {};
+        System.out.format(output, 0, this.robII(prices01));
+        int[] prices02 = {1};
+        System.out.format(output, 1, this.robII(prices02));
+        int[] prices03 = {1, 2, 3};
+        System.out.format(output, 3, this.robII(prices03));
+        int[] prices04 = {1, 2, 3, 0};
+        System.out.format(output, 4, this.robII(prices04));
+        int[] prices05 = {1, 2, 3, 0, 2, 2, 3, 0, 2};
+        System.out.format(output, 10, this.robII(prices05));
+        int[] prices06 = {1, 2, 3, 0, 2, 2, 3, 0, 2, 2, 3, 0, 2};
+        System.out.format(output, 15, this.robII(prices06));
+        int[] prices07 = {1, 2, 3, 0, 2, 2, 3, 0, 2, 2, 3, 0, 2, 2, 3, 0, 2, 2, 3, 0, 2, 2, 3, 0, 2};
+        System.out.format(output, 30, this.robII(prices07));
+        int[] prices08 = {1, 3, 2};
+        System.out.format(output, 3, this.robII(prices08));
+        int[] prices09 = {1, 3, 4};
+        System.out.format(output, 4, this.robII(prices09));
+        int[] prices10 = {2, 3, 2};
+        System.out.format(output, 3, this.robII(prices10));
+        int[] prices11 = {2, 1, 1, 2};
+        System.out.format(output, 3, this.robII(prices11));
+        int[] prices12 = {2, 2, 4, 3, 2, 5};
+        System.out.format(output, 10, this.robII(prices12));
     }
     public void testMaxCoins() {
         String output = "expected: %d\tresult: %d\n";
