@@ -28,22 +28,26 @@ public class Solution {
                 return triangle.get(0).get(0);
             }
         }
-        int[][] total = new int[triangle.size()][triangle.size()];
-        for (int[] item: total) {
-            Arrays.fill(item, Integer.MAX_VALUE);
-        }
-        total[0][0] = triangle.get(0).get(0);
-        int sum = Integer.MAX_VALUE;
-        for (int i = 0; i < total.length - 1; i++) {
+        int[] sums = new int[triangle.size()];
+        Arrays.fill(sums, Integer.MAX_VALUE);
+        sums[0] = triangle.get(0).get(0);
+        int min = Integer.MAX_VALUE;
+        for (int i = 0; i < sums.length - 1; i++) {
+            int buff = Integer.MAX_VALUE;
             for (int j = 0; j < triangle.get(i).size(); j++) {
-                total[i + 1][j] = Math.min(total[i + 1][j], total[i][j] + triangle.get(i + 1).get(j));
-                total[i + 1][j + 1] = Math.min(total[i + 1][j + 1], total[i][j] + triangle.get(i + 1).get(j + 1));
+                int temp = sums[j];
+                sums[j] = Math.min(buff, sums[j] + triangle.get(i + 1).get(j));
+                if (j == triangle.get(i).size() - 1) {
+                    sums[j + 1] = temp + triangle.get(i + 1).get(j + 1);
+                } else {
+                    buff = temp + triangle.get(i + 1).get(j + 1);
+                }
             }
         }
-        for (int i = 0; i < total.length; i++) {
-            sum = Math.min(sum, total[total.length - 1][i]);
+        for (int i = 0; i < sums.length; i++) {
+            min = Math.min(min, sums[i]);
         }
-        return sum;
+        return min;
     }
     public static void main(String[] args) {
         Solution solution = new Solution();
