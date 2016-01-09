@@ -34,24 +34,32 @@
  * F(i, n) = G(i-1) * G(n-i)   1 <= i <= n
  */
 public class Solution {
+    /**************************** 96. Unique Binary Search Trees ****************************/
     public int numTrees(int n) {
         if (n < 2) {
             return 1;
         }
-        int[] result = new int[n + 1];
-        result[0] = 1;
-        result[1] = 1;
-        for (int i = 2; i < result.length; i++) {
+        int[] catalanNum = new int[n + 1];
+        catalanNum[0] = 1;
+        catalanNum[1] = 1;
+        for (int i = 2; i < catalanNum.length; i++) {
             for (int j = 1; j <= i; j++) {
-                result[i] += result[j - 1] * result[i - j];
+                catalanNum[i] += catalanNum[j - 1] * catalanNum[i - j];
             }
         }
-        return result[n];
+        return catalanNum[n];
     }
+    /**************************** Main ****************************/
     public static void main(String[] args) {
         Solution solution = new Solution();
-        for (int i = 0; i < 10; i++) {
-            System.out.format("input: %d, output: %d\n", i, solution.numTrees(i));
+        solution.testNumTrees();
+    }
+    /**************************** Testing Methods ****************************/
+    public void testNumTrees() {
+        String output = "input: %d, expected: %d, result: %d\n";
+        int[] expected = {1, 1, 2, 5, 14, 42, 132, 429, 1430, 4862};
+        for (int i = 0; i < expected.length; i++) {
+            System.out.format(output, i, expected[i], this.numTrees(i));
         }
     }
 }
