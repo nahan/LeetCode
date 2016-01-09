@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 
 class TreeNode {
@@ -27,12 +28,36 @@ public class TreeProblems {
     }
     /**************************** 95. Unique Binary Search Trees II ****************************/
     public List<TreeNode> generateTrees(int n) {
-        return null;
+        if (n == 0) {
+            return new ArrayList<TreeNode>();
+        }
+        return this.generateTrees(1, n);
+    }
+    public List<TreeNode> generateTrees(int start, int end) {
+        List<TreeNode> result = new ArrayList<TreeNode>();
+        if (start > end) {
+            result.add(null);
+            return result;
+        }
+        for (int i = start; i <= end; i++) {
+            List<TreeNode> leftSubTrees = this.generateTrees(start, i - 1);
+            List<TreeNode> rightSubTrees = this.generateTrees(i + 1, end);
+            for (TreeNode left: leftSubTrees) {
+                for (TreeNode right: rightSubTrees) {
+                    TreeNode root = new TreeNode(i);
+                    root.left = left;
+                    root.right = right;
+                    result.add(root);
+                }
+            }
+        }
+        return result;
     }
     /**************************** Main ****************************/
     public static void main(String[] args) {
         TreeProblems solution = new TreeProblems();
-        solution.testNumTrees();
+//        solution.testNumTrees();
+        solution.testGenerateTrees();
     }
     /**************************** Testing Methods ****************************/
     public void testNumTrees() {
@@ -43,7 +68,9 @@ public class TreeProblems {
         }
     }
     public void testGenerateTrees() {
-        
+        for (int i = 0; i < 11; i++) {
+            this.print(this.generateTrees(i).size());
+        }
     }
     /**************************** Printing Methods ****************************/
     public void print(int n) {
@@ -88,7 +115,13 @@ public class TreeProblems {
     public void printList(List<String> list) {
         System.out.println(list);
     }
+    public void printTrees(List<TreeNode> list) {
+        for (TreeNode item: list) {
+            this.print(item);
+        }
+    }
     public void print(TreeNode root) {
+        System.out.println("******************* Starting *******************");
         System.out.println("pre-order: ");
         this.preOrder(root);
         System.out.println("\nin-order: ");
@@ -96,6 +129,7 @@ public class TreeProblems {
         System.out.println("\npost-order: ");
         this.postOrder(root);
         System.out.println();
+        System.out.println("******************* Ending *******************\n");
     }
     public void preOrder(TreeNode node) {
         System.out.print(node.val + ", ");
@@ -110,7 +144,7 @@ public class TreeProblems {
         if (node.left != null) {
             this.inOrder(node.left);
         }
-        System.out.println(node.val);
+        System.out.print(node.val + ", ");
         if (node.right != null) {
             this.inOrder(node.right);
         }
