@@ -71,15 +71,92 @@ public class StringProblems {
     public int min(int a, int b, int c) {
         return Math.min(a, Math.min(b, c));
     }
-    /**************************** Method ****************************/
-    /**************************** Method ****************************/
+    /**************************** 115. Distinct Subsequences ****************************/
+    /**
+     * Given a string S and a string T, count the number of distinct subsequences of T in S.
+     * A subsequence of a string is a new string which is formed from the original string 
+     * by deleting some (can be none) of the characters 
+     * without disturbing the relative positions of the remaining characters. 
+     * (ie, "ACE" is a subsequence of "ABCDE" while "AEC" is not).
+     * 
+     * Here is an example:
+     * S = "rabbbit", T = "rabbit"
+     * Return 3.
+     * @param s
+     * @param t
+     * @return
+     */
+    public int numDistinct(String s, String t) {
+        return 0;
+    }
+    /**************************** 97. Interleaving String ****************************/
+    /**
+     * Given s1, s2, s3, find whether s3 is formed by the interleaving of s1 and s2.
+     * 
+     * For example,
+     * Given:
+     * s1 = "aabcc",
+     * s2 = "dbbca",
+     * When s3 = "aadbbcbcac", return true.
+     * When s3 = "aadbbbaccc", return false.
+     * @param s1
+     * @param s2
+     * @param s3
+     * @return
+     */
+    public boolean isInterleave(String s1, String s2, String s3) {
+        if (s1 == null || s2 == null) {
+            if (s1 == null && s2 == null) {
+                return s3 == null? true: false;
+            } else {
+                if (s1 == null) {
+                    return s2.equals(s3)? true: false;
+                } else {
+                    return s1.equals(s3)? true: false;
+                }
+            }
+        } else if (s3 == null) {
+            return false;
+        }
+        int l1 = s1.length();
+        int l2 = s2.length();
+        int l3 = s3.length();
+        if (l1 + l2 != l3) {
+            return false;
+        }
+        boolean[][] dp = new boolean[l1 + 1][l2 + 1];
+        dp[0][0] = true;
+        for (int i = 0; i < l1; i++) {
+            if (s1.charAt(i) == s3.charAt(i)) {
+                dp[i + 1][0] = true;
+            } else {
+                break;
+            }
+        }
+        for (int i = 0; i < l2; i++) {
+            if (s2.charAt(i) == s3.charAt(i)) {
+                dp[0][i + 1] = true;
+            } else {
+                break;
+            }
+        }
+        for (int i = 0; i < l1; i++) {
+            for (int j = 0; j < l2; j++) {
+                boolean flag1 = dp[i][j + 1] && s1.charAt(i) == s3.charAt(i + j + 1);
+                boolean flag2 = dp[i + 1][j] && s2.charAt(j) == s3.charAt(i + j + 1);
+                dp[i + 1][j + 1] = flag1 || flag2;
+            }
+        }
+        return dp[l1][l2];
+    }
     /**************************** Method ****************************/
     /**************************** Main ****************************/
     public static void main(String[] args) {
-        System.out.println("Hello Dynamic Programming.");
-        StringProblems problems = new StringProblems();
-        problems.testIsScramble();
-        problems.testEditDistance();
+        StringProblems solution = new StringProblems();
+//        solution.testIsScramble();
+//        solution.testEditDistance();
+//        solution.testNumDistinct();
+        solution.testIsInterleave();
     }
     /**************************** Testing Methods ****************************/
     public void testIsScramble() {
@@ -138,6 +215,53 @@ public class StringProblems {
         s1 = "exponential";
         s2 = "polynomial";
         System.out.format(output, s1, s2, 6, this.minDistance(s1, s2));
+    }
+    public void testNumDistinct() {
+        String output = "String S: %s\tString T: %s\tExpected: %d\tResult: %d\n";
+        String s = null;
+        String t = null;
+        System.out.format(output, s, t, 0, this.numDistinct(s, t));
+        s = "";
+        t = "";
+        System.out.format(output, s, t, 1, this.numDistinct(s, t));
+        s = "rabbbit";
+        t = "rabbit";
+        System.out.format(output, s, t, 3, this.numDistinct(s, t));
+    }
+    public void testIsInterleave() {
+        String output = "String1: %s\tString2: %s\tInput: %s\tExpected: %s\tResult: %s\n";
+        String s1 = null;
+        String s2 = null;
+        String s3 = null;
+        System.out.format(output, s1, s2, s3, true, this.isInterleave(s1, s2, s3));
+        s1 = "";
+        s2 = "";
+        s3 = "";
+        System.out.format(output, s1, s2, s3, true, this.isInterleave(s1, s2, s3));
+        s1 = "aabcc";
+        s2 = "dbbca";
+        s3 = "aadbbcbcac";
+        System.out.format(output, s1, s2, s3, true, this.isInterleave(s1, s2, s3));
+        s1 = "aabcc";
+        s2 = "dbbca";
+        s3 = "aadbbbaccc";
+        System.out.format(output, s1, s2, s3, false, this.isInterleave(s1, s2, s3));
+        s1 = "gtaa";
+        s2 = "atc";
+        s3 = "gattaca";
+        System.out.format(output, s1, s2, s3, true, this.isInterleave(s1, s2, s3));
+        s1 = "gtaa";
+        s2 = "atc";
+        s3 = "gtataac";
+        System.out.format(output, s1, s2, s3, true, this.isInterleave(s1, s2, s3));
+        s1 = "gtaa";
+        s2 = "atc";
+        s3 = "gatacta";
+        System.out.format(output, s1, s2, s3, false, this.isInterleave(s1, s2, s3));
+        s1 = "baababbabbababbaaababbbbbbbbbbbaabaabaaaabaaabbaaabaaaababaabaaabaabbbbaabbaabaabbbbabbbababbaaaabab";
+        s2 = "aababaaabbbababababaabbbababaababbababbbbabbbbbababbbabaaaaabaaabbabbaaabbababbaaaababaababbbbabbbbb";
+        s3 = "babbabbabbababbaaababbbbaababbaabbbbabbbbbaaabbabaababaabaaabaabbbaaaabbabbaaaaabbabbaabaaaabbbbababbbababbabaabababbababaaaaaabbababaaabbaabbbbaaaaabbbaaabbbabbbbaaabaababbaabababbbbababbaaabbbabbbab";
+        System.out.format(output, s1, s2, s3, false, this.isInterleave(s1, s2, s3));
     }
     /**************************** Printing Methods ****************************/
     public void print(int n) {
