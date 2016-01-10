@@ -35,6 +35,51 @@ public class Solution {
         if (l1 + l2 != l3) {
             return false;
         }
+        boolean[][] dp = new boolean[l1 + 1][l2 + 1];
+        dp[0][0] = true;
+        for (int i = 0; i < l1; i++) {
+            if (s1.charAt(i) == s3.charAt(i)) {
+                dp[i + 1][0] = true;
+            } else {
+                break;
+            }
+        }
+        for (int i = 0; i < l2; i++) {
+            if (s2.charAt(i) == s3.charAt(i)) {
+                dp[0][i + 1] = true;
+            } else {
+                break;
+            }
+        }
+        for (int i = 0; i < l1; i++) {
+            for (int j = 0; j < l2; j++) {
+                boolean flag1 = dp[i][j + 1] && s1.charAt(i) == s3.charAt(i + j + 1);
+                boolean flag2 = dp[i + 1][j] && s2.charAt(j) == s3.charAt(i + j + 1);
+                dp[i + 1][j + 1] = flag1 || flag2;
+            }
+        }
+        return dp[l1][l2];
+    }
+    public boolean isInterleave0(String s1, String s2, String s3) {
+        if (s1 == null || s2 == null) {
+            if (s1 == null && s2 == null) {
+                return s3 == null? true: false;
+            } else {
+                if (s1 == null) {
+                    return s2.equals(s3)? true: false;
+                } else {
+                    return s1.equals(s3)? true: false;
+                }
+            }
+        } else if (s3 == null) {
+            return false;
+        }
+        int l1 = s1.length();
+        int l2 = s2.length();
+        int l3 = s3.length();
+        if (l1 + l2 != l3) {
+            return false;
+        }
         if (l1 == 0 || l2 == 0) {
             if (l1 == 0 && l2 == 0) {
                 return l3 == 0? true: false;
