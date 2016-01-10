@@ -15,20 +15,25 @@ public class StringProblems {
         if (s1 == null || s2 == null || s1.length() == 0 || s2.length() == 0 || s1.length() != s2.length()) {
             return false;
         }
-        char[] c1 = new char[s1.length()];
-        char[] c2 = new char[s2.length()];
-        for (int i = 0; i < s1.length(); i++) {
-            c1[i] = s1.charAt(i);
-            c2[i] = s2.charAt(i);
+        if (s1.equals(s2)) {
+            return true;
         }
+        char[] c1 = s1.toCharArray();
+        char[] c2 = s2.toCharArray();
         Arrays.sort(c1);
         Arrays.sort(c2);
-        for (int i = 0; i < c1.length; i++) {
-            if (c1[i] != c2[i]) {
-                return false;
+        if (!Arrays.equals(c1, c2)) {
+            return false;
+        }
+        for (int i = 1; i < s1.length(); i++) {
+            if (this.isScramble(s1.substring(0, i), s2.substring(0, i)) && this.isScramble(s1.substring(i), s2.substring(i))) {
+                return true;
+            }
+            if (this.isScramble(s1.substring(0, i), s2.substring(s2.length() - i)) && this.isScramble(s1.substring(i), s2.substring(0, s2.length() - i))) {
+                return true;
             }
         }
-        return true;
+        return false;
     }
     /**************************** 72. Edit Distance ****************************/
     /**
@@ -172,9 +177,9 @@ public class StringProblems {
     /**************************** Main ****************************/
     public static void main(String[] args) {
         StringProblems solution = new StringProblems();
-//        solution.testIsScramble();
+        solution.testIsScramble();
 //        solution.testEditDistance();
-        solution.testNumDistinct();
+//        solution.testNumDistinct();
 //        solution.testIsInterleave();
     }
     /**************************** Testing Methods ****************************/
