@@ -13,4 +13,9 @@ public class Solution {
         }
         return Integer.MAX_VALUE;
     }
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+        int[] input = {1, 2, 3, 4, 5, 6, 7, 8, 9, 1};
+        System.out.println(solution.findDuplicate(input));
+    }
 }
