@@ -28,12 +28,12 @@ public class Solution {
             }
         }
         if (nodeIndex > start1) {
-            int inLength = nodeIndex - start1;
-            node.left = this.build(inorder, start1, nodeIndex - 1, postorder, start2, start2 + inLength - 1);
+            int leftLength = nodeIndex - start1;
+            node.left = this.build(inorder, start1, nodeIndex - 1, postorder, start2, start2 + leftLength - 1);
         }
         if (nodeIndex < end1) {
-            int postLength = end1 - nodeIndex;
-            node.right = this.build(inorder, nodeIndex + 1, end1, postorder, end2 - postLength, end2 - 1);
+            int rightLength = end1 - nodeIndex;
+            node.right = this.build(inorder, nodeIndex + 1, end1, postorder, end2 - rightLength, end2 - 1);
         }
         return node;
     }
