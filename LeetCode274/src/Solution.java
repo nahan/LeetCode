@@ -23,7 +23,7 @@ import java.util.Arrays;
 public class Solution {
     public int hIndex(int[] citations) {
         if (citations == null || citations.length < 2) {
-            return citations == null || citations.length == 0? 0: 1;
+            return citations == null || citations.length == 0? 0: citations[0] == 0? 0: 1;
         }
         Arrays.sort(citations);
         int index = 1;
