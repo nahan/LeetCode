@@ -1,10 +1,6 @@
 
 public class Solution {
     public int rangeBitwiseAnd(int m, int n) {
-        
-        return this.getResult(m, n);
-    }
-    public int getResult(int m, int n) {
         if (m == 0 || m == n) {
             return m;
         }
@@ -12,14 +8,11 @@ public class Solution {
         if (m < element) {
             return 0;
         }
-        return element + this.getResult(m - element, n - element);
+        return element + this.rangeBitwiseAnd(m - element, n - element);
     }
     public int getElement(int n) {
-        int i = 0;
-        while ((int) Math.pow(2, i) <= n) {
-            i += 1;
-        }
-        return (int) Math.pow(2, i - 1);
+        int pow = (int) (Math.log(n) / Math.log(2));
+        return (int) Math.pow(2, pow);
     }
 
     public static void main(String[] args) {
