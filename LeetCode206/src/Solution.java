@@ -18,19 +18,19 @@ public class Solution {
         if (head == null || head.next == null) {
             return head;
         }
-        ListNode index = head;
-        ListNode cur = head;
         ListNode pre = null;
+        ListNode index = head;
         ListNode pos = head.next;
         while (index.next != null) {
+            head = index;
             index = pos;
-            cur.next = pre;
-            pre = cur;
+            head.next = pre;
+            pre = head;
             pos = index.next;
-            cur = index;
         }
-        cur.next = pre;
-        return cur;
+        head = index;
+        head.next = pre;
+        return head;
     }
     public void print(ListNode node) {
         if (node != null) {
