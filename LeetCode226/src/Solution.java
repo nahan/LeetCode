@@ -26,19 +26,14 @@ class TreeNode {
 }
 
 public class Solution {
-	public TreeNode invertTree(TreeNode root) {
-		if (root == null) {
-			return null;
-		}
-		TreeNode temp = root.left;
-		root.left = root.right;
-		root.right = temp;
-		if (root.left != null) {
-			this.invertTree(root.left);
-		}
-		if (root.right != null) {
-			this.invertTree(root.right);
-		}
+    public TreeNode invertTree(TreeNode root) {
+        if (root != null) {
+            TreeNode temp = root.left;
+            root.left = root.right;
+            root.right = temp;
+            invertTree(root.left);
+            invertTree(root.right);
+        }
         return root;
     }
 	public void preOrder(TreeNode root) {
