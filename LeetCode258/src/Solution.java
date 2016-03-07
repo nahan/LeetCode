@@ -11,20 +11,9 @@
  *
  */
 public class Solution {
-	public int addDigits1(int num) {
-		if (num < 10) {
-			return num;
-		}
-		int temp = 0;
-		while (num > 0) {
-			temp += getDigit(num);
-			num /= 10;
-		}
-        return addDigits(temp);
+    public int addDigits1(int num) {
+        return num == 0? 0: 1 + (num - 1) % 9;
     }
-	public int getDigit(int num) {
-		return num >= 10 ? num % 10 : num;
-	}
 	
 	public int addDigits(int num) {
 		return (num - 1) % 9 + 1;
