@@ -13,11 +13,7 @@
  */
 public class Solution {
     public boolean canWinNim(int n) {
-        if ((n - 1) % 4 == 3) {
-            return false;
-        } else {
-            return true;
-        }
+        return !(n % 4 == 0);
     }
     public static void main(String[] args) {
         Solution solution = new Solution();
