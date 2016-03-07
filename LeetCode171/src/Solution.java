@@ -20,13 +20,13 @@ public class Solution {
         if (s == null || s.length() == 0) {
             return 0;
         }
-        int count = 1;
-        int result = 0;
-        for (int index = s.length() - 1; index >= 0; index--) {
-            result += (s.charAt(index) - 64) * count;
-            count *= 26;
+        int n = 0;
+        int base = 1;
+        for (int i = s.length() - 1; i >= 0; i--) {
+            n += base * (s.charAt(i) - 'A' + 1);
+            base *= 26;
         }
-        return result;
+        return n;
     }
     public static void main(String[] args) {
         Solution solution = new Solution();
