@@ -20,10 +20,15 @@ class ListNode {
 }
  
 public class Solution {
-	public void deleteNode(ListNode node) {
-		node.val = node.next.val;
-		node.next = node.next.next;
-	}
+    public void deleteNode(ListNode node) {
+        if (node.next == null) {
+            node = null;
+        } else {
+            ListNode next = node.next;
+            node.val = next.val;
+            node.next = next.next;
+        }
+    }
 	
 	public void printList(ListNode node) {
 		if (node != null) {
