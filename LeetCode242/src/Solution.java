@@ -12,60 +12,23 @@ import java.util.Iterator;
  *
  */
 public class Solution {
-	public boolean isAnagram1(String s, String t) {
-		if (s == null || t == null) {
-			return (s == null && t == null) ? true : false;
-		}
-		if (s.equals(t)) {
-			return true;
-		}
-		if (s.length() != t.length()) {
-			return false;
-		}
-		
-		char[] s1 = s.toCharArray();
-		char[] t1 = t.toCharArray();
-		
-		Arrays.sort(s.toCharArray());
-		Arrays.sort(t.toCharArray());
-		
-		return  new String(s1).equals(new String(t1)) ? true : false;
-    }
-	
-	public boolean isAnagram(String s, String t) {
-		if (s == null || t == null) {
-			return (s == null && t == null) ? true : false;
-		}
-		if (s.equals(t)) {
-			return true;
-		}
-		if (s.length() != t.length()) {
-			return false;
-		}
-		
-		HashMap<Character, Integer> hash = new HashMap<Character, Integer>();
-		for (int index = 0; index < s.length(); index ++) {
-			if (hash.containsKey(s.charAt(index))) {
-				hash.put(s.charAt(index), hash.get(s.charAt(index)) + 1);
-			} else {
-				hash.put(s.charAt(index), 1);
-			}
-		}
-		for (int index = 0; index < t.length(); index ++) {
-			if (hash.containsKey(t.charAt(index))) {
-				hash.put(t.charAt(index), hash.get(t.charAt(index)) - 1);
-			} else {
-				return false;
-			}
-		}
-		
-		Iterator<Integer> it = hash.values().iterator();
-		while (it.hasNext()) {
-			if (it.next() != 0) {
-				return false;
-			}
-		}
-		return true;
+    public boolean isAnagram(String s, String t) {
+        if (s == null || t == null) {
+            return s == null && t == null? true: false;
+        }
+        int[] a = new int[26];
+        for (int i = 0; i < s.length(); i++) {
+            a[s.charAt(i) - 'a'] += 1;
+        }
+        for (int i = 0; i < t.length(); i++) {
+            a[t.charAt(i) - 'a'] -= 1;
+        }
+        for (int i: a) {
+            if (i != 0) {
+                return false;
+            }
+        }
+        return true;
     }
 	
 	public static void main(String[] args) {
