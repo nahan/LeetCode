@@ -1,8 +1,3 @@
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Iterator;
-
-
 /**
  * Given two strings s and t, write a function to determine if t is an anagram of s.
  * For example,
