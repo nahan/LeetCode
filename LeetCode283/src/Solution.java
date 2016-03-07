@@ -13,19 +13,19 @@
  */
 public class Solution {
     public void moveZeroes(int[] nums) {
-        if (nums == null || nums.length == 1) {
+        if (nums == null || nums.length == 0) {
             return;
         }
-        int num = 0;
+        int count = 0;
         for (int i = 0; i < nums.length; i++) {
             if (nums[i] == 0) {
-                num++;
+                count += 1;
             } else {
-                nums[i - num] = nums[i];
+                nums[i - count] = nums[i];
             }
         }
-        for (int i = 1; i <= num; i++) {
-            nums[nums.length - i] = 0;
+        for (int i = nums.length - count; i < nums.length; i++) {
+            nums[i] = 0;
         }
     }
     public void print(int[] nums) {
