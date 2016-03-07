@@ -1,4 +1,3 @@
-import java.util.HashMap;
 /**
  * Given an array of size n, find the majority element. 
  * The majority element is the element that appears more than [n/2] times.
@@ -13,21 +12,19 @@ public class Solution {
         if (nums == null || nums.length == 0) {
             return 0;
         }
-        int sum = 0;
-        int result = 0;
-        HashMap<Integer, Integer> hash = new HashMap<Integer, Integer>();
-        for (int index = 0; index < nums.length; index++) {
-            if (hash.containsKey(nums[index]) == true) {
-                hash.put(nums[index], hash.get(nums[index]) + 1);
+        int major = nums[0];
+        int count = 1;
+        for (int i = 1; i < nums.length; i++) {
+            if (major == nums[i]) {
+                count += 1;
+            } else if (count == 0) {
+                major = nums[i];
+                count = 1;
             } else {
-                hash.put(nums[index], 1);
-            }
-            if (sum < hash.get(nums[index])) {
-                sum = hash.get(nums[index]);
-                result = nums[index];
+                count -= 1;
             }
         }
-        return result;
+        return major;
     }
     public static void main(String[] args) {
         Solution solution = new Solution();
